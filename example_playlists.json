@@ -1,0 +1,14 @@
+{
+  "classic": {
+    "display_name": "CLASSICAL MUSIC",
+    "color_code": "#FFF"
+  },
+  "techno": {
+    "display_name": "TECHNO",
+    "color_code": "#caccaa"
+  },
+  "german": {
+    "display_name": "Stupid German Stuff",
+    "color_code": "#dada"
+  }
+}
