@@ -7,6 +7,7 @@ from src.mood_lighting.zigbee_module import Zigbee
 from src.mood_lighting.music_module import MusicPlayer
 from src.mood_lighting.config import CONFIG, CONTROLLER
 
+from time import sleep
 
 # used sigletons
 PLAYLIST = Playlist()
@@ -143,4 +144,24 @@ def next_button_pressed():
 if __name__ == "__main__":
     system_power_on()
 
-    # TOOD: Dauerschleife
+    try:
+        # TODO: Hinzufügen der ganzen Buttons
+        MOOD_LIGHT.NEXT_BUTTON.when_released = next_button_pressed
+        # GPIO.setwarnings(False)
+        # GPIO.add_event_detect(PIR_SENSOR_GPIO, GPIO.RISING,  callback=detect_movement)
+
+        # playlist_btn.when_released = playlist_callback
+        # shutdown_btn.when_held = shutdown_callback
+        # empty_btn.when_released = empty_callback
+        while True:
+            sleep(0)
+    except KeyboardInterrupt:
+        # TODO Logging
+        print("Keyboard interrupt")
+    except:
+        # TODO: Logging
+        print("Something went wrong")
+    finally:
+        # CLEAN UP
+        DISPLAY.clean_up()
+        # TODO: LOGGING
