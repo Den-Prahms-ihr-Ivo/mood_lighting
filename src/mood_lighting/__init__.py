@@ -144,6 +144,11 @@ def next_button_pressed():
 if __name__ == "__main__":
     system_power_on()
 
+    # TODO: Musicplayer get current song.
+    # ==> könntest du über diesen weg lösen:
+    # Als system command
+    # mpc idle player
+
     try:
         # TODO: Hinzufügen der ganzen Buttons
         MOOD_LIGHT.NEXT_BUTTON.when_released = next_button_pressed
@@ -154,14 +159,21 @@ if __name__ == "__main__":
         # shutdown_btn.when_held = shutdown_callback
         # empty_btn.when_released = empty_callback
         while True:
+            if CONTROLLER["is_playing"]:
+                cs = PLAYER.get_playing()
+                if not cs == PLAYER.current_song:
+                    PLAYER.current_song = cs
+                    DISPLAY.display(cs)
             sleep(0)
+
     except KeyboardInterrupt:
         # TODO Logging
         print("Keyboard interrupt")
-    except:
+    except Exception as e:
         # TODO: Logging
         print("Something went wrong")
     finally:
         # CLEAN UP
         DISPLAY.clean_up()
+        PLAYER.clean_up()
         # TODO: LOGGING
