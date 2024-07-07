@@ -1,7 +1,7 @@
 from threading import Timer
 from RPLCD.I2C import Charlcd
 
-from src.mood_lighting.config import CONFIG
+from config import CONFIG
 
 
 class Display(object):

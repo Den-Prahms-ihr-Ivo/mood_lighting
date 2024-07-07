@@ -4,7 +4,7 @@ High Level Tests, testing the desired state transitions
 
 import pytest
 from time import sleep
-from src.mood_lighting.config import CONFIG, CONTROLLER
+from src.config import CONFIG, CONTROLLER
 import src.mood_lighting as ML
 from src.mood_lighting import (
     # CONTROLLER,

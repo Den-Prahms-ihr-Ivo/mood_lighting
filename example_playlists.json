@@ -7,6 +7,10 @@
     "display_name": "TECHNO",
     "color_code": "#caccaa"
   },
+  "sleep": {
+    "display_name": "Schlafmodus",
+    "color_code": "#dada"
+  },
   "german": {
     "display_name": "Stupid German Stuff",
     "color_code": "#dada"
