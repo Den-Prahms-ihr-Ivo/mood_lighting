@@ -30,6 +30,7 @@ class ButtonPanel(Input_Component):
     ceiling_state = (BASIS_STATES.UNDEFINED, -1)
     playlist_state = BASIS_STATES.UNDEFINED
     music_component = None
+    outlet_component = None
     music_state = {}
 
     def __init__(
@@ -44,6 +45,7 @@ class ButtonPanel(Input_Component):
         ceiling_monitor: Monitor,
         playlist_monitor: Monitor,
         music_component: Optional[Utility_Component] = None,
+        outlet_component: Optional[Utility_Component] = None,
     ) -> None:
         self.candle_monitor = candle_monitor
         self.outlet_monitor = outlet_monitor
@@ -54,6 +56,7 @@ class ButtonPanel(Input_Component):
         self.ceiling_monitor = ceiling_monitor
         self.audio_monitor = audio_monitor
         self.music_component = music_component
+        self.outlet_component = outlet_component
         self.playlist_monitor = playlist_monitor
         #
         self.candle_timer = None

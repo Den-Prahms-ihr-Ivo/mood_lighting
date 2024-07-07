@@ -22,7 +22,7 @@ from tests.stubs import (
 # Stubbing der verschiedenen Imports
 sys.modules["src.mood_lighting.utility_components.display"] = display
 sys.modules["src.mood_lighting.utility_components.candle_motor"] = candle_motor
-sys.modules["src.mood_lighting.utility_components.outlet_speaker"] = outlet_speaker
+#sys.modules["src.mood_lighting.utility_components.outlet_speaker"] = outlet_speaker
 sys.modules["src.mood_lighting.utility_components.audio_component"] = audio_component
 sys.modules["src.mood_lighting.utility_components.mood_light_component"] = (
     mood_light_component
@@ -76,6 +76,8 @@ def initialised_button_panel() -> Tuple[str]:
     bp.music_component._next = MagicMock()
     bp.music_component._get_current_song = MagicMock()
     bp.music_component._get_current_song.return_value = "BITCHES"
+    bp.outlet_component._turn_off = MagicMock()
+    bp.outlet_component._turn_on = MagicMock()
 
     bp.initialise_states()
     return bp

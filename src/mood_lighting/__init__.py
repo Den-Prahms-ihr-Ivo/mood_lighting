@@ -12,6 +12,8 @@ from src.mood_lighting.monitors.music_monitor import MusicMonitor
 from src.mood_lighting.utility_components.display import Display
 from src.mood_lighting.input_components.button_panel import ButtonPanel
 
+from src.config import CONFIG
+
 import os
 import logging
 
@@ -19,12 +21,23 @@ logger = logging.getLogger("moodlight")
 logging.basicConfig(filename="moodlight.log", encoding="utf-8", level=logging.DEBUG)
 
 
+if os.environ.get("TESTING_ENV", None) is None:
+    import GPIO
+
+    GPIO.setmode(GPIO.BCM)
+
+    GPIO.setup(CONFIG["DEFAULT"].get("CANDLE_PIN", 20))
+    GPIO.setup(20, GPIO.OUT)
+
+
 def initialise_button_panel() -> ButtonPanel:
     # Initialisation.
     # Theoretisch brauche ich keinen eigenen Zugriff auf die Nutzkomponenten, oder?
 
     candle_monitor, _ = monitor_and_utility_factory(mon=Monitor, utl=CandleMotor)
-    outlet_monitor, _ = monitor_and_utility_factory(mon=Monitor, utl=OutletSpeaker)
+    outlet_monitor, outlet_component = monitor_and_utility_factory(
+        mon=Monitor, utl=OutletSpeaker
+    )
     audio_monitor, _ = monitor_and_utility_factory(mon=Monitor, utl=AudioComponent)
     mood_light_monitor, _ = monitor_and_utility_factory(
         mon=Monitor, utl=MoodLightComponent
@@ -45,6 +58,7 @@ def initialise_button_panel() -> ButtonPanel:
 
     if os.environ.get("TESTING_ENV", None) is None:
         music_component = None
+        outlet_component = None
 
     return ButtonPanel(
         candle_monitor=candle_monitor,
@@ -57,6 +71,7 @@ def initialise_button_panel() -> ButtonPanel:
         display=display,
         playlist_monitor=playlist_monitor,
         music_component=music_component,
+        outlet_component=outlet_component,
     )
 
 
