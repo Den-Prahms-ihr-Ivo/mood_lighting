@@ -11,11 +11,6 @@ from enum import Enum
 from src.helper.abstract_display import AbstractDisplay
 from src.helper.state_types import BASIS_STATES, BINARY_STATES, TERTIARY_STATES
 
-# TODO: Type for State declarieren?
-# Wie will ich das genau anstellen?
-# ==> Über List of Enums declared as a new Type!
-# ==> Oder doch lieber über ein Dict aus Enums? Ist für den Zugriff sicher einfacher?
-
 
 class Monitor:
 
@@ -31,7 +26,6 @@ class Monitor:
         self.display_monitor = None
         self.current_state = BASIS_STATES.UNDEFINED
 
-    # TODO: muss das abstract sein?
     def set_target_state(self, desired_state: Tuple[Any]):
         for cb in self.target_state_callbacks:
             cb(desired_state)

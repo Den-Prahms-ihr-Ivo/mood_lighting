@@ -51,11 +51,6 @@ def pytest_configure(config):
     for key, value in list(CONFIG["TEST"].items()):
         CONFIG.set("DEFAULT", key, value)
 
-    # TODO:
-    # ML.PLAYLIST.read_playlist()
-
-    # Aufbauen
-
 
 @pytest.fixture
 def initialised_button_panel() -> Tuple[str]:

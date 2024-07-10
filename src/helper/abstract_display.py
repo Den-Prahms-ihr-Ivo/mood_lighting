@@ -21,5 +21,4 @@ class AbstractDisplay(ABC):
 
     @abstractmethod
     def show(self, text):
-        # TODO: implement
         pass

@@ -25,7 +25,10 @@ class AudioComponent(Utility_Component):
         # Hier reicht es, den initialen INVALID state einfach wegzulassen
         # self.actual_state(BASIS_STATES.INVALID)
         if desired_state == BINARY_STATES.ON:
-            # TODO: KERZE ANSCHALTEN
+            # TODO:
+            # Das solltest du in Verbindung bringen mit
+            # Outlet_Modul. Erst wenn das WIRKLICH angeht,
+            # muss das auch angehen. nach 0.5s
             # ...
             self.actual_state(BINARY_STATES.ON)
         else:

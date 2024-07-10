@@ -79,8 +79,6 @@ class ButtonPanel(Input_Component):
             "next_pressed": None,
         }
         #
-        # TODO: setzen aller callback funktion zum Anpassen des aktuellen Statusses
-        # Im Sinne von: (candle State brauche ich allerdings nicht.)
         self.candle_monitor.add_actual_state_callback(self.update_candle_state)
         self.outlet_monitor.add_actual_state_callback(self.update_outlet_state)
         self.music_monitor.add_actual_state_callback(self.update_music_state)
@@ -109,7 +107,6 @@ class ButtonPanel(Input_Component):
         self.display.set_target_state(BINARY_STATES.OFF)
 
     def sleep_mode(self):
-        # TODO: noch nicht fertig
         self.ceiling_monitor.set_target_state((BINARY_STATES.OFF, -1))
         self.outlet_monitor.set_target_state(BINARY_STATES.ON)
         self.audio_monitor.set_target_state(BINARY_STATES.ON)
@@ -215,8 +212,6 @@ class ButtonPanel(Input_Component):
         for key, value in state.items():
             self.music_state[key] = value
 
-        # TODO: DAS GILT ES MASSIV ZU ÜBERARBEITEN!!!!!
-        # Läuft musik, muss ggf etwas angezeigt werden.
         if self.music_state["next_pressed"] == BINARY_STATES.ON:
             text = None
             if self.music_state["state"] == BINARY_STATES.ON:
@@ -244,7 +239,6 @@ class ButtonPanel(Input_Component):
 
     def update_ceiling_light_state(self, state):
         self.ceiling_state = state
-        # TODO:
         logger.debug("Updated Ceiling State to: %s", state[0])
 
     def update_audio_state(self, state):

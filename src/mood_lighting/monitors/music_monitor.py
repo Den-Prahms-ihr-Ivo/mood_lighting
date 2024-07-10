@@ -34,8 +34,5 @@ class MusicMonitor(Monitor):
         for key, value in actual_state.items():
             self.current_music_state[key] = value
 
-        # TODO: möglicherweise anpassen des current State
-
-        # TODO: display aufrufen bei speziellen State changes.
         for cb in self.actual_state_callbacks:
             cb(actual_state)
