@@ -1,4 +1,5 @@
 import os
+from mpd import MPDClient
 from typing import Optional, Callable
 
 from src.helper.utility_component import Utility_Component
@@ -9,7 +10,7 @@ from random import randrange
 from threading import Timer
 
 from pathlib import Path
-from mpd import MPDClient
+#from mpd import MPDClient
 
 
 class MusicComponent(Utility_Component):

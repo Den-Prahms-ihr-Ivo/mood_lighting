@@ -2,7 +2,6 @@ from src.helper.monitor import Monitor
 from src.helper.factory import monitor_and_utility_factory
 from src.mood_lighting.utility_components.candle_motor import CandleMotor
 from src.mood_lighting.utility_components.outlet_speaker import OutletSpeaker
-from src.mood_lighting.utility_components.audio_component import AudioComponent
 from src.mood_lighting.utility_components.mood_light_component import MoodLightComponent
 from src.mood_lighting.utility_components.spotlight_component import SpotlightComponent
 from src.mood_lighting.utility_components.ceiling_light import CeilingLight
@@ -22,11 +21,11 @@ logging.basicConfig(filename="moodlight.log", encoding="utf-8", level=logging.DE
 
 
 if os.environ.get("TESTING_ENV", None) is None:
-    import GPIO
+    import RPi.GPIO as GPIO
 
     GPIO.setmode(GPIO.BCM)
 
-    GPIO.setup(CONFIG["DEFAULT"].get("CANDLE_PIN", 20), GPIO.OUT)
+    GPIO.setup(int(CONFIG["DEFAULT"].get("CANDLE_PIN", 20)), GPIO.OUT)
 
 
 def initialise_button_panel() -> ButtonPanel:

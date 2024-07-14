@@ -5,7 +5,7 @@ from src.helper.state_types import BASIS_STATES, BINARY_STATES, TERTIARY_STATES
 from threading import Timer
 from src.config import CONFIG
 
-import GPIO
+import RPi.GPIO as GPIO
 
 
 class OutletSpeaker(Utility_Component):
@@ -104,7 +104,7 @@ class OutletSpeaker(Utility_Component):
             self.audio_switch_timer.cancel()
 
         self.audio_switch_timer = Timer(
-            int(CONFIG["DEFAULT"].get("turn_audio_delay", 0.6)), self._set_standby_high
+            float(CONFIG["DEFAULT"].get("turn_audio_delay", 0.6)), self._set_standby_high
         )
         self.audio_switch_timer.start()
 
@@ -115,7 +115,7 @@ class OutletSpeaker(Utility_Component):
         GPIO.output(CONFIG["DEFAULT"].get("AUDIO_SWITCH", 5), GPIO.HIGH)
 
         self.audio_switch_timer = Timer(
-            int(CONFIG["DEFAULT"].get("speaker_switch_timer", 0.4)),
+            float(CONFIG["DEFAULT"].get("speaker_switch_timer", 0.4)),
             self._set_standby_low,
         )
         self.audio_switch_timer.start()

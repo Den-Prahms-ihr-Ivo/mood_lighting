@@ -3,7 +3,7 @@ from typing import Optional, Callable, Tuple
 from src.helper.utility_component import Utility_Component
 from src.helper.state_types import BINARY_STATES, CeilingSateType
 from subprocess import run
-from config import CONFIG
+from src.config import CONFIG
 
 
 class CeilingLight(Utility_Component):
@@ -21,9 +21,9 @@ class CeilingLight(Utility_Component):
         state, intensity = desired_state
 
         if state == BINARY_STATES.ON:
-            payload = f'{"state": "ON", "brightness": {intensity}}'
+            payload = f'"state": "ON", "brightness": {intensity}'
 
-            for i in range(1, int(CONFIG["DEFAULT"].get("CEILING_LIGHT_COUNT", 2) + 1)):
+            for i in range(1, int(CONFIG["DEFAULT"].get("CEILING_LIGHT_COUNT", 2)) + 1):
                 run(
                     [
                         "mosquitto_pub",
@@ -36,9 +36,9 @@ class CeilingLight(Utility_Component):
 
             self.actual_state((BINARY_STATES.ON, intensity))
         else:
-            payload = f'{"state": "OFF", "brightness": {intensity}}'
+            payload = f'"state": "OFF", "brightness": {min(0,intensity)}'
 
-            for i in range(1, int(CONFIG["DEFAULT"].get("CEILING_LIGHT_COUNT", 2) + 1)):
+            for i in range(1, int(CONFIG["DEFAULT"].get("CEILING_LIGHT_COUNT", 2)) + 1):
                 run(
                     [
                         "mosquitto_pub",
