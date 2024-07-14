@@ -26,8 +26,7 @@ if os.environ.get("TESTING_ENV", None) is None:
 
     GPIO.setmode(GPIO.BCM)
 
-    GPIO.setup(CONFIG["DEFAULT"].get("CANDLE_PIN", 20))
-    GPIO.setup(20, GPIO.OUT)
+    GPIO.setup(CONFIG["DEFAULT"].get("CANDLE_PIN", 20), GPIO.OUT)
 
 
 def initialise_button_panel() -> ButtonPanel:
