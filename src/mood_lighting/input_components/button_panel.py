@@ -26,7 +26,6 @@ class ButtonPanel(Input_Component):
     outlet_state = BASIS_STATES.UNDEFINED
     mood_light_state = BASIS_STATES.UNDEFINED
     spotlight_state = BASIS_STATES.UNDEFINED
-    audio_state = BASIS_STATES.UNDEFINED
     ceiling_state = (BASIS_STATES.UNDEFINED, -1)
     playlist_state = BASIS_STATES.UNDEFINED
     music_component = None
@@ -37,7 +36,6 @@ class ButtonPanel(Input_Component):
         self,
         candle_monitor: Monitor,
         outlet_monitor: Monitor,
-        audio_monitor: Monitor,
         mood_light_monitor: Monitor,
         music_monitor: MusicMonitor,
         display: Display,
@@ -54,7 +52,6 @@ class ButtonPanel(Input_Component):
         self.display = display
         self.spotlight_monitor = spotlight_monitor
         self.ceiling_monitor = ceiling_monitor
-        self.audio_monitor = audio_monitor
         self.music_component = music_component
         self.outlet_component = outlet_component
         self.playlist_monitor = playlist_monitor
@@ -85,7 +82,6 @@ class ButtonPanel(Input_Component):
         self.mood_light_monitor.add_actual_state_callback(self.update_mood_light_state)
         self.spotlight_monitor.add_actual_state_callback(self.update_spotlight_state)
         self.ceiling_monitor.add_actual_state_callback(self.update_ceiling_light_state)
-        self.audio_monitor.add_actual_state_callback(self.update_audio_state)
         self.playlist_monitor.add_actual_state_callback(self.update_playlist_state)
 
     def actual_state_callback(self, actual_state):
@@ -97,7 +93,6 @@ class ButtonPanel(Input_Component):
         self.outlet_monitor.set_target_state(BINARY_STATES.OFF)
         self.mood_light_monitor.set_target_state(BINARY_STATES.OFF)
         self.spotlight_monitor.set_target_state(BINARY_STATES.OFF)
-        self.audio_monitor.set_target_state(BINARY_STATES.OFF)
         self.music_monitor.set_target_state(
             {
                 "state": BINARY_STATES.OFF,
@@ -109,7 +104,6 @@ class ButtonPanel(Input_Component):
     def sleep_mode(self):
         self.ceiling_monitor.set_target_state((BINARY_STATES.OFF, -1))
         self.outlet_monitor.set_target_state(BINARY_STATES.ON)
-        self.audio_monitor.set_target_state(BINARY_STATES.ON)
         self.candle_monitor.set_target_state(BINARY_STATES.ON)
 
         self.mood_light_monitor.set_target_state(BINARY_STATES.OFF)
@@ -148,7 +142,6 @@ class ButtonPanel(Input_Component):
         self.candle_monitor.set_target_state(BINARY_STATES.ON)
         self.mood_light_monitor.set_target_state(BINARY_STATES.ON)
         self.outlet_monitor.set_target_state(BINARY_STATES.ON)
-        self.audio_monitor.set_target_state(BINARY_STATES.ON)
         self.spotlight_monitor.set_target_state(BINARY_STATES.ON)
         # Display wird von music Monitor im State Change bedient
         self.music_monitor.set_target_state(
@@ -162,7 +155,6 @@ class ButtonPanel(Input_Component):
         self.candle_monitor.set_target_state(BINARY_STATES.OFF)
         self.mood_light_monitor.set_target_state(BINARY_STATES.OFF)
         self.outlet_monitor.set_target_state(BINARY_STATES.OFF)
-        self.audio_monitor.set_target_state(BINARY_STATES.OFF)
         self.spotlight_monitor.set_target_state(BINARY_STATES.OFF)
         self.music_monitor.set_target_state({"state": BINARY_STATES.OFF})
 
@@ -170,7 +162,6 @@ class ButtonPanel(Input_Component):
         self.candle_monitor.set_target_state(BINARY_STATES.OFF)
         self.ceiling_monitor.set_target_state((BINARY_STATES.OFF, -1))
         self.outlet_monitor.set_target_state(BINARY_STATES.OFF)
-        self.audio_monitor.set_target_state(BINARY_STATES.OFF)
         self.mood_light_monitor.set_target_state(BINARY_STATES.OFF)
         self.spotlight_monitor.set_target_state(BINARY_STATES.OFF)
         self.music_monitor.set_target_state(
@@ -194,7 +185,6 @@ class ButtonPanel(Input_Component):
         self.candle_monitor.set_target_state(BINARY_STATES.ON)
         self.ceiling_monitor.set_target_state((BINARY_STATES.OFF, -1))
         self.outlet_monitor.set_target_state(BINARY_STATES.OFF)
-        self.audio_monitor.set_target_state(BINARY_STATES.OFF)
         self.mood_light_monitor.set_target_state(BINARY_STATES.ON)
         self.spotlight_monitor.set_target_state(BINARY_STATES.ON)
         self.music_monitor.set_target_state({"state": BINARY_STATES.OFF})

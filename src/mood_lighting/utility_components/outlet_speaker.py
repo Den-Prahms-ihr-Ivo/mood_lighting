@@ -5,6 +5,8 @@ from src.helper.state_types import BASIS_STATES, BINARY_STATES, TERTIARY_STATES
 from threading import Timer
 from src.config import CONFIG
 
+import GPIO
+
 
 class OutletSpeaker(Utility_Component):
     """
@@ -14,12 +16,14 @@ class OutletSpeaker(Utility_Component):
 
     current_state = BASIS_STATES.UNDEFINED
     cnt_dwn_timer = None
+    audio_switch_timer = None
 
     def __init__(self, callback: Optional[Callable] = None) -> None:
         super().__init__(callback=callback)
         self.current_state = BASIS_STATES.UNDEFINED
 
         self.cnt_dwn_timer = None
+        self.audio_switch_timer = None
 
     def target_state(self, desired_state: BINARY_STATES):
         # TOOD: das ist für meinen Ansatz etwas zu over the top
@@ -92,3 +96,26 @@ class OutletSpeaker(Utility_Component):
             ]
         )
         self.current_state = TERTIARY_STATES.ON
+
+        self.get_out_of_standby_mode()
+
+    def get_out_of_standby_mode(self):
+        if self.audio_switch_timer is not None:
+            self.audio_switch_timer.cancel()
+
+        self.audio_switch_timer = Timer(
+            int(CONFIG["DEFAULT"].get("turn_audio_delay", 0.6)), self._set_standby_high
+        )
+        self.audio_switch_timer.start()
+
+    def _set_standby_low(self):
+        GPIO.output(CONFIG["DEFAULT"].get("AUDIO_SWITCH", 5), GPIO.LOW)
+
+    def _set_standby_high(self):
+        GPIO.output(CONFIG["DEFAULT"].get("AUDIO_SWITCH", 5), GPIO.HIGH)
+
+        self.audio_switch_timer = Timer(
+            int(CONFIG["DEFAULT"].get("speaker_switch_timer", 0.4)),
+            self._set_standby_low,
+        )
+        self.audio_switch_timer.start()

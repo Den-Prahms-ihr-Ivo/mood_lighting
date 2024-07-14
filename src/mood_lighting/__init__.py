@@ -38,7 +38,6 @@ def initialise_button_panel() -> ButtonPanel:
     outlet_monitor, outlet_component = monitor_and_utility_factory(
         mon=Monitor, utl=OutletSpeaker
     )
-    audio_monitor, _ = monitor_and_utility_factory(mon=Monitor, utl=AudioComponent)
     mood_light_monitor, _ = monitor_and_utility_factory(
         mon=Monitor, utl=MoodLightComponent
     )
@@ -63,7 +62,6 @@ def initialise_button_panel() -> ButtonPanel:
     return ButtonPanel(
         candle_monitor=candle_monitor,
         outlet_monitor=outlet_monitor,
-        audio_monitor=audio_monitor,
         mood_light_monitor=mood_light_monitor,
         spotlight_monitor=spotlight_monitor,
         ceiling_monitor=ceiling_monitor,
