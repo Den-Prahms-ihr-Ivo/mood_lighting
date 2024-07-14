@@ -6,9 +6,5 @@
   "test": {
     "display_name": "TEST",
     "color_code": "#caccaa"
-  },
-  "sleep": {
-    "display_name": "Schlafmodus :)",
-    "color_code": "#caccaa"
   }
 }
