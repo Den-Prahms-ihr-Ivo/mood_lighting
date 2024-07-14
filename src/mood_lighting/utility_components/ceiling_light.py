@@ -21,7 +21,7 @@ class CeilingLight(Utility_Component):
         state, intensity = desired_state
 
         if state == BINARY_STATES.ON:
-            payload = f'"state": "ON", "brightness": {intensity}'
+            payload = f'{{"state": "ON", "brightness": {intensity}}}'
 
             for i in range(1, int(CONFIG["DEFAULT"].get("CEILING_LIGHT_COUNT", 2)) + 1):
                 run(
@@ -36,7 +36,7 @@ class CeilingLight(Utility_Component):
 
             self.actual_state((BINARY_STATES.ON, intensity))
         else:
-            payload = f'"state": "OFF", "brightness": {min(0,intensity)}'
+            payload = f'{{"state": "OFF", "brightness": {max(0,intensity)}}}'
 
             for i in range(1, int(CONFIG["DEFAULT"].get("CEILING_LIGHT_COUNT", 2)) + 1):
                 run(
