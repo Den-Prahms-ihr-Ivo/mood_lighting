@@ -10,7 +10,8 @@ from random import randrange
 from threading import Timer
 
 from pathlib import Path
-#from mpd import MPDClient
+
+# from mpd import MPDClient
 
 
 class MusicComponent(Utility_Component):
@@ -94,6 +95,7 @@ class MusicComponent(Utility_Component):
     def playlist_change(self, state):
         self._connect()
         idx, _ = state
+        self.client.clear()
         self.client.load(idx)
 
     def _play(self):
