@@ -27,4 +27,5 @@ class Display(AbstractDisplay):
             self.lcd.clear()
 
     def show(self, text):
+        self.lcd.clear()
         self.lcd.write_string(text)

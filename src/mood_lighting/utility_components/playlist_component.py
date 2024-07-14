@@ -47,7 +47,7 @@ class PlaylistComponent(Utility_Component):
 
         idx = self._playlist_keys[index]
         self._current_playlist_state = (idx, display_name)
-
+        print(f"Setting playlist tp {display_name}")
         self.actual_state((idx, display_name))
 
     def read_playlist(self) -> None:

@@ -236,24 +236,29 @@ class ButtonPanel(Input_Component):
         logger.debug("Updated Audio State to: %s", state)
 
     def button_next_pressed(self):
+        print("Button NEXT pressed")
         if self.music_state.get("state") == BINARY_STATES.ON:
             self.next_song()
         else:
             self.next_playlist()
 
     def button_start_stop_pressed(self):
+        print("Button START STOP pressed")
         if self.music_state.get("state") == BINARY_STATES.ON:
             self.stop_music()
         else:
             self.play_music()
 
     def button_sleep_pressed(self):
+        print("Button SLEEP pressed")
         self.sleep_mode()
 
     def button_mood_pressed(self):
+        print("Button MOOD pressed")
         self.mood_ligth_mode()
 
     def button_shutdown_pressed(self):
+        print("Button SHUT DOWN pressed")
         self.shut_down()
 
     def shut_down(self):

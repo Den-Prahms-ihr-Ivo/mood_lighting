@@ -112,7 +112,7 @@ class MusicComponent(Utility_Component):
 
     def _get_current_song(self):
         self._connect()
-        return self.client.currentsong()
+        return self.client.playlist()
 
     def quit(self):
         self.client.close()
