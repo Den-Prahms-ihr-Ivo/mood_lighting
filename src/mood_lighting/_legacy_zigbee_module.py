@@ -1,6 +1,6 @@
 from threading import Timer
 
-from src.mood_lighting.config import CONFIG, CONTROLLER
+from config import CONFIG, CONTROLLER
 
 # from src.mood_lighting import CONTROLLER
 

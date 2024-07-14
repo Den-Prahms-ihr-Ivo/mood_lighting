@@ -1,9 +1,17 @@
 import pytest
+from src.helper.state_types import BINARY_STATES, TERTIARY_STATES
+from src.mood_lighting.input_components.button_panel import ButtonPanel
+from src.config import CONFIG
+from time import sleep
 
 
-def test_initialize_playlist(fresh_playlist):
-    """Test if a random Playlist is selected in while initializing the Playlist class"""
-    assert fresh_playlist.current_playlist is not None
+def test_playlist_init(initialised_button_panel: ButtonPanel):
+    """
+    Testing the initial states of the System
+    """
+    IBP = initialised_button_panel
+
+    assert IBP.playlist_state is not None
 
 
 @pytest.mark.parametrize(
@@ -15,29 +23,12 @@ def test_initialize_playlist(fresh_playlist):
     ],
 )
 def test_explicit_playlist_switch(
-    fresh_playlist, mocker, desired_playlist_key, expected_display_name
+    initialised_button_panel: ButtonPanel, desired_playlist_key, expected_display_name
 ):
     """Changing to an explicit playlist"""
     # spy = mocker.spy(playlist_module, "display_playlist")
     # spy.assert_called_once_with(desired_playlist)
-    fresh_playlist.set_playlist(desired_playlist_key)
-    assert fresh_playlist.current_playlist["display_name"] == expected_display_name
+    IBP = initialised_button_panel
 
-
-@pytest.mark.parametrize(
-    argnames="num_skips, expected_display_name",
-    argvalues=[
-        (1, "TECHNO"),
-        (3, "CLASSICAL MUSIC"),
-        (9, "CLASSICAL MUSIC"),
-        (10, "TECHNO"),
-        (2, "Stupid German Stuff"),
-        (11, "Stupid German Stuff"),
-    ],
-)
-def test_next_playlist(playlist, num_skips, expected_display_name):
-    """pressing the next() event"""
-    for _ in range(0, num_skips):
-        playlist.next()
-
-    assert playlist.current_playlist["display_name"] == expected_display_name
+    IBP.playlist_monitor.set_target_state(desired_playlist_key)
+    assert IBP.playlist_state[1] == expected_display_name

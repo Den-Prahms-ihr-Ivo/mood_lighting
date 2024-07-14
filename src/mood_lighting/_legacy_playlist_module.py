@@ -5,7 +5,7 @@ import json
 from typing import Optional, Dict
 from random import randrange
 from pathlib import Path
-from src.mood_lighting.config import CONFIG, CONTROLLER
+from config import CONFIG, CONTROLLER
 
 
 class Playlist(object):

@@ -1,7 +1,7 @@
 # https://pypi.org/project/python-mpd2/
 from musicpd import MPDClient
 
-from src.mood_lighting.config import CONFIG, CONTROLLER
+from config import CONFIG, CONTROLLER
 
 # from src.mood_lighting import CONTROLLER
 
