@@ -115,7 +115,7 @@ class OutletSpeaker(Utility_Component):
         GPIO.output(CONFIG["DEFAULT"].get("AUDIO_SWITCH", 5), GPIO.HIGH)
 
         self.audio_switch_timer = Timer(
-            float(CONFIG["DEFAULT"].get("speaker_switch_timer", 0.4)),
+            float(CONFIG["DEFAULT"].get("speaker_switch_timer", 0.6)),
             self._set_standby_low,
         )
         self.audio_switch_timer.start()

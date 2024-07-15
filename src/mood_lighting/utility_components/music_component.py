@@ -55,6 +55,8 @@ class MusicComponent(Utility_Component):
         self.client = MPDClient()
         self.client.timeout = 10
         self.client.idletimeout = None
+
+        self._connect()
         self.client.random(1)
         self.client.single(0)
         self.client.repeat(0)
