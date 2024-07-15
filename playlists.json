@@ -3,12 +3,24 @@
     "display_name": "GÖRMAN SHIT",
     "color_code": "#FFF"
   },
-  "test": {
-    "display_name": "TEST",
+  "blues": {
+    "display_name": "Don's Tunes",
     "color_code": "#caccaa"
   },
   "sleep": {
     "display_name": "Schlafmodus :)",
+    "color_code": "#caccaa"
+  },
+  "mood": {
+    "display_name": "Mood Music",
+    "color_code": "#caccaa"
+  },
+  "saxophone": {
+    "display_name": "Saxophone",
+    "color_code": "#caccaa"
+  },
+  "sad": {
+    "display_name": "Traurisch",
     "color_code": "#caccaa"
   }
 }
