@@ -32,6 +32,8 @@ class ButtonPanel(Input_Component):
     outlet_component = None
     music_state = {}
 
+    BUTTON_DISABLE_TIME = 1
+
     def __init__(
         self,
         candle_monitor: Monitor,
@@ -59,6 +61,15 @@ class ButtonPanel(Input_Component):
         self.candle_timer = None
         self.music_timer = None
         self.display_timer = None
+        self._button_next_timer = None
+        self._button_start_stop_timer = None
+        self._button_mood_timer = None
+        self._button_sleep_timer = None
+
+        self._button_next_enabled = True
+        self._button_start_stop_enabled = True
+        self._button_mood_enabled = True
+        self._button_sleep_enabled = True
         #
         #
         self.candle_state = BASIS_STATES.UNDEFINED
@@ -235,25 +246,72 @@ class ButtonPanel(Input_Component):
         self.audio_state = state
         logger.debug("Updated Audio State to: %s", state)
 
+    def _enable_next_button(self):
+        self._button_next_enabled = True
+
     def button_next_pressed(self):
+        if not self._button_next_enabled:
+            return
+
+        self._button_next_enabled = False
+        self._button_next_timer = Timer(
+            self.BUTTON_DISABLE_TIME, self._enable_next_button
+        )
+        self._button_next_timer.start()
+
         print("Button NEXT pressed")
+
         if self.music_state.get("state") == BINARY_STATES.ON:
             self.next_song()
         else:
             self.next_playlist()
 
+    def _enable_start_stop_button(self):
+        self._button_start_stop_enabled = True
+
     def button_start_stop_pressed(self):
+        if not self._button_start_stop_enabled:
+            return
+
+        self._button_start_stop_enabled = False
+        self._button_start_stop_timer = Timer(
+            self.BUTTON_DISABLE_TIME, self._enable_start_stop_button
+        )
+        self._button_start_stop_timer.start()
+
         print("Button START STOP pressed")
         if self.music_state.get("state") == BINARY_STATES.ON:
             self.stop_music()
         else:
             self.play_music()
 
+    def _enable_sleep_button(self):
+        self._button_sleep_enabled = True
+
     def button_sleep_pressed(self):
+        if not self._button_sleep_enabled:
+            return
+
+        self._button_sleep_enabled = False
+        self._button_sleep_timer = Timer(
+            self.BUTTON_DISABLE_TIME, self._enable_sleep_button
+        )
+        self._button_sleep_timer.start()
         print("Button SLEEP pressed")
         self.sleep_mode()
 
+    def _enable_mood_button(self):
+        self._button_mood_enabled = True
+
     def button_mood_pressed(self):
+        if not self._button_mood_enabled:
+            return
+
+        self._button_mood_enabled = False
+        self._button_mood_timer = Timer(
+            self.BUTTON_DISABLE_TIME, self._enable_mood_button
+        )
+        self._button_mood_timer.start()
         print("Button MOOD pressed")
         self.mood_ligth_mode()
 

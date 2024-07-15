@@ -11,6 +11,10 @@ from threading import Timer
 
 from pathlib import Path
 
+import logging
+
+logger = logging.getLogger("moodlight")
+
 # from mpd import MPDClient
 
 
@@ -51,6 +55,9 @@ class MusicComponent(Utility_Component):
         self.client = MPDClient()
         self.client.timeout = 10
         self.client.idletimeout = None
+        self.client.random(1)
+        self.client.single(0)
+        self.client.repeat(0)
 
         self.update_playlists()
 
@@ -82,6 +89,9 @@ class MusicComponent(Utility_Component):
                 ):
                     self._next()
                     self.current_music_state["current_song"] = self._get_current_song()
+            elif key == "volumne":
+                self.current_music_state[key] = value
+                self.set_volumne(value)
 
             else:
                 self.current_music_state[key] = value
@@ -110,11 +120,22 @@ class MusicComponent(Utility_Component):
 
     def _next(self):
         self._connect()
-        self.client.next()
+        try:
+            self.client.next()
+        except:
+            print("Failure pressing next")
+            logger.warn("Failure pressing next")
 
     def _get_current_song(self):
         self._connect()
         return self.client.playlist()
+
+    def set_volumne(self, vol):
+        self._connect()
+        vol = max(int(vol), 0)
+        vol = min(int(vol), 100)
+
+        self.client.setvol(vol)
 
     def quit(self):
         self.client.close()

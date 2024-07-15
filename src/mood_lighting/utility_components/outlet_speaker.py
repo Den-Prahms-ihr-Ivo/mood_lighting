@@ -104,7 +104,7 @@ class OutletSpeaker(Utility_Component):
             self.audio_switch_timer.cancel()
 
         self.audio_switch_timer = Timer(
-            float(CONFIG["DEFAULT"].get("turn_audio_delay", 0.6)), self._set_standby_high
+            float(CONFIG["DEFAULT"].get("turn_audio_delay", 1)), self._set_standby_high
         )
         self.audio_switch_timer.start()
 
