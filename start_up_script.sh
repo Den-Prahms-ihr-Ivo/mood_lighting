@@ -15,4 +15,7 @@ do
     fi
 done
 
-/home/ivo/mood_light/virtenv/bin/python /home/ivo/mood_light/mood_lighting/start.py
+sleep 10s
+
+sudo /home/ivo/mood_light/virtenv/bin/python /home/ivo/mood_light/mood_lighting/start.py >> /home/ivo/mood_light/mood_light.log 2>&1
+# sudo /home/ivo/mood_light/virtenv/bin/python start.py
