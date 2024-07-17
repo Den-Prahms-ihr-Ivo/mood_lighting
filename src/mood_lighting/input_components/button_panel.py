@@ -65,11 +65,13 @@ class ButtonPanel(Input_Component):
         self._button_start_stop_timer = None
         self._button_mood_timer = None
         self._button_sleep_timer = None
+        self._snooze_timer = None
 
         self._button_next_enabled = True
         self._button_start_stop_enabled = True
         self._button_mood_enabled = True
         self._button_sleep_enabled = True
+        self._sleep_mode_snooze = False
         #
         #
         self.candle_state = BASIS_STATES.UNDEFINED
@@ -113,9 +115,9 @@ class ButtonPanel(Input_Component):
         self.display.set_target_state(BINARY_STATES.OFF)
 
     def sleep_mode(self):
+        # IVO
         self.ceiling_monitor.set_target_state((BINARY_STATES.OFF, -1))
         self.outlet_monitor.set_target_state(BINARY_STATES.ON)
-        self.candle_monitor.set_target_state(BINARY_STATES.ON)
 
         self.mood_light_monitor.set_target_state(BINARY_STATES.OFF)
         self.spotlight_monitor.set_target_state(BINARY_STATES.OFF)
@@ -129,24 +131,40 @@ class ButtonPanel(Input_Component):
             }
         )
 
-        # Turn Candle on for 5 min:
-        if self.candle_timer is not None:
-            self.candle_timer.cancel()
+        if self._snooze_timer is not None:
+            self._snooze_timer.cancel()
 
-        self.candle_timer = Timer(
-            float(CONFIG["DEFAULT"].get("candle_sleep_time", 300)),
-            lambda: self.candle_monitor.set_target_state(BINARY_STATES.OFF),
-        )
-        self.candle_timer.start()
+        if not self._sleep_mode_snooze:
+            self.candle_monitor.set_target_state(BINARY_STATES.ON)
+            # Turn Candle on for 5 min:
+            if self.candle_timer is not None:
+                self.candle_timer.cancel()
+
+            self.candle_timer = Timer(
+                float(CONFIG["DEFAULT"].get("candle_sleep_time", 300)),
+                lambda: self.candle_monitor.set_target_state(BINARY_STATES.OFF),
+            )
+            self.candle_timer.start()
 
         if self.music_timer is not None:
             self.music_timer.cancel()
 
         self.music_timer = Timer(
             float(CONFIG["DEFAULT"].get("music_sleep_time", 300)),
-            self.turn_off_everything,
+            self.snooze_mode,
         )
         self.music_timer.start()
+
+    def snooze_mode(self):
+        self._sleep_mode_snooze = True
+        if self._snooze_timer is not None:
+            self._snooze_timer.cancel()
+
+        self._snooze_timer = Timer(
+            float(CONFIG["DEFAULT"].get("music_sleep_time", 300)),
+            self.turn_off_everything,
+        )
+        self._snooze_timer.start()
 
     def play_music(self):
         self.ceiling_monitor.set_target_state((BINARY_STATES.OFF, -1))
@@ -168,6 +186,7 @@ class ButtonPanel(Input_Component):
         self.outlet_monitor.set_target_state(BINARY_STATES.OFF)
         self.spotlight_monitor.set_target_state(BINARY_STATES.OFF)
         self.music_monitor.set_target_state({"state": BINARY_STATES.OFF})
+        self._sleep_mode_snooze = False
 
     def turn_off_everything(self):
         self.candle_monitor.set_target_state(BINARY_STATES.OFF)
