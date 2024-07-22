@@ -1,6 +1,9 @@
 from src.mood_lighting import initialise_button_panel as INITIALISE_BP
 from src.config import CONFIG
+from src.helper.mailer import send_mail
+
 import time
+
 
 import RPi.GPIO as GPIO
 
@@ -38,8 +41,18 @@ empty_btn = Button(EMPTY_PIN)
 # audio_switch = LED(AUDIO_SWITCH_PIN)
 # candle_pin = LED(CANDLE_PIN)
 
-bp = INITIALISE_BP()
-bp.initialise_states()
+try:
+    bp = INITIALISE_BP()
+    bp.initialise_states()
+except ConnectionRefusedError as e:
+    send_mail(
+        text="[Errno 111] Connection refused.\nTried to Initialize Button Panel and Connect to the MPD",
+        title="MoodLight Connection Refused :(",
+    )
+
+    # TODO: SAFE SHUTDOWN
+    GPIO.cleanup()
+    print("\n\nTschöö, gä!")
 
 
 if __name__ == "__main__":
@@ -57,7 +70,6 @@ if __name__ == "__main__":
             time.sleep(0)
 
     except KeyboardInterrupt:
-        # Sentinel Value in die Schlange hinzufügen und auf beenden des Threads warten
         # TODO: aufräumen
 
         # clean up
