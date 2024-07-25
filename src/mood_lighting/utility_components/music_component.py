@@ -5,6 +5,7 @@ from typing import Optional, Callable
 from src.helper.utility_component import Utility_Component
 from src.helper.state_types import BASIS_STATES, BINARY_STATES
 from src.config import CONFIG
+from src.helper.mailer import send_mail
 import json
 from random import randrange
 from threading import Timer
@@ -109,24 +110,34 @@ class MusicComponent(Utility_Component):
         idx, _ = state
         self.client.clear()
         self.client.load(idx)
+        self._current_playlist = idx
 
     def _play(self):
         self._currently_playing = True
         self._connect()
         self.client.play()
 
+    def _pause(self):
+        self._currently_playing = False
+        self._connect()
+        self.client.pause()
+
     def _stop(self):
         self._currently_playing = False
         self._connect()
-        self.client.stop()
+        if self._current_playlist == "sleep":
+            self.client.pause()
+        else:
+            self.client.stop()
 
     def _next(self):
         self._connect()
         try:
             self.client.next()
-        except:
-            print("Failure pressing next")
+        except Exception as e:
+            send_mail("Failure pressing next")
             logger.warn("Failure pressing next")
+            logger.warn(e)
 
     def _get_current_song(self):
         self._connect()

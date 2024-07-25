@@ -1,0 +1,14 @@
+[Unit]
+Description=MOSQUITO MQTT SERVER
+#installed under: /usr/lib/systemd/system
+
+[Service]
+User=ivo
+Group=ivo
+StandardOutput=append:/home/ivo/kuh.log
+StandardError=append:/home/ivo/kuh2.log
+
+ExecStart=/home/ivo/mood_light/mood_lighting/start_mqtt_server.sh
+
+[Install]
+WantedBy=multi-user.target
