@@ -9,6 +9,7 @@ from src.helper.mailer import send_mail
 import json
 from random import randrange
 from threading import Timer
+from src.helper.mailer import send_mail
 
 from pathlib import Path
 
@@ -96,6 +97,10 @@ class MusicComponent(Utility_Component):
                 self.current_music_state[key] = value
                 self.set_volumne(value)
 
+                send_mail(
+                    text=f"Setting Volumne to {value} - should be 20",
+                    title="Hallo Ivo, ich sette das Volume Set",
+                )
             else:
                 self.current_music_state[key] = value
 
@@ -126,6 +131,10 @@ class MusicComponent(Utility_Component):
         self._currently_playing = False
         self._connect()
         if self._current_playlist == "sleep":
+            send_mail(
+                text=f"Going to Sleep Mode",
+                title="Hallo Ivo, ich gehe schlafen und pausiere die Mussig :)",
+            )
             self.client.pause()
         else:
             self.client.stop()
@@ -158,7 +167,7 @@ class MusicComponent(Utility_Component):
         if not self._connected:
             self.client.connect(self.HOST, self.PORT)
             self._connected = True
-            self.cnt_dwn_timer = Timer(5, self.disconnect)
+            self.cnt_dwn_timer = Timer(30, self.disconnect)
             self.cnt_dwn_timer.start()
 
     def disconnect(self):
