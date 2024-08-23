@@ -23,6 +23,7 @@ class MusicComponent(Utility_Component):
 
     current_music_state = {}
     _currently_playing = False
+    _currently_paused = False
     _current_playlist = None
     client = None
 
@@ -47,6 +48,7 @@ class MusicComponent(Utility_Component):
         self._playlist_keys = None
         self._current_playlist = None
         self._currently_playing = False
+        self._currently_paused = False
         self._cnt_dwn_timer = None
 
         self._connected = False
@@ -115,12 +117,17 @@ class MusicComponent(Utility_Component):
     def _play(self):
         self._currently_playing = True
         self._connect()
-        self.client.play()
+        if self._currently_paused:
+            self._currently_paused = False
+            self.client.pause(1)
+        else:
+            self.client.play()
 
     def _pause(self):
         self._currently_playing = False
+        self._currently_paused = True
         self._connect()
-        self.client.pause()
+        self.client.pause(0)
 
     def _stop(self):
         self._currently_playing = False
