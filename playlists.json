@@ -11,6 +11,10 @@
     "display_name": "Schlafmodus :)",
     "color_code": "#caccaa"
   },
+  "relax": {
+    "display_name": "Schlafmodus 2 :)",
+    "color_code": "#caccaa"
+  },
   "mood": {
     "display_name": "Mood Music",
     "color_code": "#caccaa"
@@ -21,6 +25,10 @@
   },
   "sad": {
     "display_name": "Traurisch",
+    "color_code": "#caccaa"
+  },  
+  "dnb": {
+    "display_name": "Nam & Bass",
     "color_code": "#caccaa"
   }
 }

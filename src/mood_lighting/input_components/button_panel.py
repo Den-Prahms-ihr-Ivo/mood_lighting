@@ -3,7 +3,7 @@ from src.helper.input_component import Input_Component
 from src.helper.monitor import Monitor
 from src.helper.state_types import (
     BINARY_STATES,
-    BINARY_STATES,
+    SHUTDOWN_STATE,
     MUSIC_STATES,
     PLAYLIST_STATE_TYPE,
     BASIS_STATES,
@@ -155,6 +155,48 @@ class ButtonPanel(Input_Component):
         )
         self.music_timer.start()
 
+    def sleep_relax_mode(self):
+        self.ceiling_monitor.set_target_state((BINARY_STATES.OFF, -1))
+        self.outlet_monitor.set_target_state(BINARY_STATES.ON)
+
+        self.mood_light_monitor.set_target_state(BINARY_STATES.OFF)
+        self.spotlight_monitor.set_target_state(BINARY_STATES.OFF)
+        self.display.set_target_state(BINARY_STATES.OFF)
+
+        self.playlist_monitor.set_target_state("relax")
+        self.music_monitor.set_target_state(
+            {
+                "state": BINARY_STATES.ON,
+                "volume": CONFIG["DEFAULT"].get("sleep_volumne", 50),
+            }
+        )
+
+        if self._snooze_timer is not None:
+            self._snooze_timer.cancel()
+
+        if not self._sleep_mode_snooze:
+            self.candle_monitor.set_target_state(BINARY_STATES.ON)
+            # Turn Candle on for 3 min:
+            if self.candle_timer is not None:
+                self.candle_timer.cancel()
+
+            self.candle_timer = Timer(
+                float(CONFIG["DEFAULT"].get("candle_sleep_time", 180)),
+                lambda: self.candle_monitor.set_target_state(BINARY_STATES.OFF),
+            )
+            self.candle_timer.start()
+
+        if self.music_timer is not None:
+            self.music_timer.cancel()
+
+        self.music_timer = Timer(
+            float(CONFIG["DEFAULT"].get("music_sleep_time", 300)),
+            self.snooze_mode,
+        )
+        self.music_timer.start()
+
+
+
     def snooze_mode(self):
         self._sleep_mode_snooze = True
         if self._snooze_timer is not None:
@@ -192,7 +234,7 @@ class ButtonPanel(Input_Component):
         self.candle_monitor.set_target_state(BINARY_STATES.OFF)
         self.ceiling_monitor.set_target_state((BINARY_STATES.OFF, -1))
         self.outlet_monitor.set_target_state(BINARY_STATES.OFF)
-        self.mood_light_monitor.set_target_state(BINARY_STATES.OFF)
+        self.mood_light_monitor.set_target_state(SHUTDOWN_STATE.SHUTDOWN)
         self.spotlight_monitor.set_target_state(BINARY_STATES.OFF)
         self.music_monitor.set_target_state(
             {
@@ -201,6 +243,7 @@ class ButtonPanel(Input_Component):
             }
         )
         self.display.set_target_state(BINARY_STATES.OFF)
+        
 
     def next_playlist(self):
         self.playlist_monitor.set_target_state(1)
@@ -318,6 +361,18 @@ class ButtonPanel(Input_Component):
         self._button_sleep_timer.start()
         print("Button SLEEP pressed")
         self.sleep_mode()
+
+    def button_sleep_relax_pressed(self):
+        if not self._button_sleep_enabled:
+            return
+
+        self._button_sleep_enabled = False
+        self._button_sleep_timer = Timer(
+            self.BUTTON_DISABLE_TIME, self._enable_sleep_button
+        )
+        self._button_sleep_timer.start()
+        print("Button SLEEP RELAX pressed")
+        self.sleep_relax_mode()
 
     def _enable_mood_button(self):
         self._button_mood_enabled = True

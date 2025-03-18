@@ -24,6 +24,9 @@ class TERTIARY_STATES(Enum):
     OFF = 1
     IDLE_CNT_DWN = 2
 
+class SHUTDOWN_STATE(Enum):
+    SHUTDOWN = -1
+    
 
 
 class MusicStateType(TypedDict):

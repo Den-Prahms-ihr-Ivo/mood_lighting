@@ -1,6 +1,7 @@
 from src.mood_lighting import initialise_button_panel as INITIALISE_BP
 from src.config import CONFIG
 from src.helper.mailer import send_mail
+from src.mood_lighting.utility_components.mood_light_component import led_thread, led_queue, LED_Mode
 
 import time
 
@@ -35,8 +36,8 @@ GPIO.setup(CANDLE_PIN, GPIO.OUT, initial=0)
 next_btn = Button(NEXT_PIN)
 start_stop_btn = Button(START_STOP_PIN)
 sleep_btn = Button(SLEEP_PIN)
+sleep_relax_btn = Button(EMPTY_PIN)
 shutdown_btn = Button(POWEROFF_BUTTON_PIN, hold_time=2)
-empty_btn = Button(EMPTY_PIN)
 
 # audio_switch = LED(AUDIO_SWITCH_PIN)
 # candle_pin = LED(CANDLE_PIN)
@@ -63,6 +64,7 @@ if __name__ == "__main__":
         next_btn.when_released = bp.button_next_pressed
         start_stop_btn.when_released = bp.button_start_stop_pressed
         sleep_btn.when_released = bp.button_sleep_pressed
+        sleep_relax_btn.when_released = bp.button_sleep_relax_pressed
         empty_btn.when_released = bp.button_mood_pressed
         shutdown_btn.when_held = bp.button_shutdown_pressed
 
@@ -71,7 +73,8 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         # TODO: aufräumen
-
+        led_queue.put((LED_Mode.shutdown, None, None))
+        led_thread.join()
         # clean up
         GPIO.cleanup()
 
