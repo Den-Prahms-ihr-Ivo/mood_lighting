@@ -1,6 +1,7 @@
 from src import new_button_panel as BP
 from src.config import CONFIG
 from src.helper.mailer import send_mail
+from src import new_outlet as OUTLET
 
 import time
 
@@ -22,6 +23,7 @@ POWEROFF_BUTTON_PIN = int(CONFIG["DEFAULT"].get("POWEROFF_BUTTON_PIN", 12))
 AUDIO_SWITCH_PIN = int(CONFIG["DEFAULT"].get("AUDIO_SWITCH", 5))
 CANDLE_PIN = int(CONFIG["DEFAULT"].get("CANDLE_PIN", 20))
 
+
 # GPIO.setup(NEXT_PIN, GPIO.IN)
 # GPIO.setup(START_STOP_PIN, GPIO.IN)
 # GPIO.setup(SLEEP_PIN, GPIO.IN)
@@ -42,7 +44,9 @@ empty_btn = Button(EMPTY_PIN)
 # candle_pin = LED(CANDLE_PIN)
 
 try:
-    BP.initialise_states()
+    BP.turn_off_everything()
+    OUTLET._turn_off()
+
 except ConnectionRefusedError as e:
     send_mail(
         text="[Errno 111] Connection refused.\nTried to Initialize Button Panel and Connect to the MPD",
