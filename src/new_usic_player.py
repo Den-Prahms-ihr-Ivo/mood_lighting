@@ -8,6 +8,7 @@ PORT = 6600
 client = MPDClient()
 client.timeout = 10
 client.idletimeout = None
+_connected = False
 
 
 def set_state(flag):
@@ -26,6 +27,7 @@ def set_playlist(idx):
 
 
 def _connect():
+    global _connected
     if not _connected:
         client.connect(HOST, PORT)
         _connected = True
@@ -34,5 +36,6 @@ def _connect():
 
 
 def disconnect():
+    global _connected
     _connected = False
     client.disconnect()
