@@ -64,10 +64,10 @@ if __name__ == "__main__":
         GPIO.setwarnings(False)
 
         next_btn.when_released = BP.button_next_pressed
-        sleep_btn.when_released = BP.button_sleep_pressed
+        empty_btn.when_released = BP.button_sleep_pressed
         start_stop_btn.when_released = BP.button_start_stop_pressed
-        shutdown_btn.when_held = BP.button_light1_pressed
-        empty_btn.when_released = BP.button_light2_pressed
+        shutdown_btn.when_released = BP.button_light1_pressed
+        sleep_btn.when_released = BP.button_light2_pressed
 
         while True:
             time.sleep(0)
