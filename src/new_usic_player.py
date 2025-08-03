@@ -16,6 +16,7 @@ def set_state(flag):
     if flag:
         print("... Play music")
         client.play()
+        client.setvol(100)
     else:
         print("... Pause music")
         client.stop()
@@ -50,3 +51,10 @@ def disconnect():
     global _connected
     _connected = False
     client.disconnect()
+
+
+_connect()
+client.random(1)
+client.single(0)
+client.repeat(0)
+client.update()
