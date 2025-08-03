@@ -37,6 +37,8 @@ led_strip = PixelStrip(
 led_strip.begin()
 currently_running = False
 
+previous_time = datetime.datetime.now()
+
 
 def wheel(pos):
     """Generate rainbow colors across 0-255 positions."""
@@ -51,11 +53,13 @@ def wheel(pos):
 
 
 def animate(ls):
+    global previous_time
     s = datetime.datetime.now().second
-    ms = datetime.datetime.now().microsecond
+    delta = previous_time - datetime.datetime.now()
+
     m = datetime.datetime.now().minute
     offset = int(s / 59 * (LED_COUNT - 1))
-    ms_offset = int(ms / 10000000 * 255)
+
     minute_offset = m / 59 * 100
 
     R = int(CONFIG["DEFAULT"].get("COLOR_R", 0))
@@ -65,9 +69,9 @@ def animate(ls):
     for i in range(0, LED_COUNT):
         position = (i + offset) % LED_COUNT
         color_intensity = i / (LED_COUNT - 1)
-        r = int(((R + minute_offset * 1) * color_intensity + ms_offset) % 255)
-        g = int(((G + minute_offset * 2) * color_intensity + ms_offset) % 255)
-        b = int(((B + minute_offset * 3) * color_intensity + ms_offset) % 255)
+        r = int((((R + minute_offset * 1 + delta) % 255) * color_intensity) % 255)
+        g = int((((G + minute_offset * 2 + delta) % 255) * color_intensity) % 255)
+        b = int((((B + minute_offset * 3 + delta) % 255) * color_intensity) % 255)
         ls.setPixelColor(position, Color(r, g, b))
 
     ls.show()
@@ -100,10 +104,11 @@ def led_consumer(queue: Queue):
 
 
 def set_state(state):
-    global led_strip, led_thread, current_state
+    global led_strip, led_thread, current_state, previous_time
 
     if state:
         current_state = True
+        previous_time = datetime.datetime.now()
         led_thread.start()
         led_queue.put((LED_Mode.RUN, led_strip))
     else:
