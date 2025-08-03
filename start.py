@@ -44,7 +44,7 @@ empty_btn = Button(EMPTY_PIN)
 # candle_pin = LED(CANDLE_PIN)
 
 try:
-    BP.turn_off_everything()
+    BP.init()
     OUTLET._turn_off()
 
 except ConnectionRefusedError as e:

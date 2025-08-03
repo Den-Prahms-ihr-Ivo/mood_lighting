@@ -38,20 +38,24 @@ def init_playlists():
         current_playlist_idx = randrange(len(playlists.keys()))
 
     MUSIC_PLAYER.set_playlist(list(playlists.keys())[current_playlist_idx])
+    print(playlists.keys())
+    print(len(playlists.keys()))
 
 
 def get_next_playlist():
     global current_playlist_idx, playlists
     current_playlist_idx = (current_playlist_idx + 1) % len(playlists.keys())
-    return playlists.keys()[current_playlist_idx]
+    return list(playlists.keys())[current_playlist_idx]
 
 
 def init():
     # Initialize Playlists:
     init_playlists()
+    turn_off_everything()
 
 
 def button_next_pressed():
+    print("BUTTON NEXT PRESSED")
     global music_playing, playlists
     if music_playing:
         MUSIC_PLAYER.next_song()
@@ -62,18 +66,22 @@ def button_next_pressed():
 
 
 def button_start_stop_pressed():
+    print("BUTTON START STOP PRESSED")
     global music_playing
     if music_playing:
+        OUTLET.set_state(True)
         MUSIC_PLAYER.set_state(False)
         mood_light_mode()
         music_playing = False
     else:
+        OUTLET.set_state(False)
         MUSIC_PLAYER.set_state(True)
         stop_mood_light_mode()
         music_playing = True
 
 
 def mood_light_mode():
+    print("start mood ligth")
     CEILING.set_state(False)
     DISPLAY.set_state(False)
     CANDLE.set_state(True)
@@ -82,7 +90,8 @@ def mood_light_mode():
 
 
 def stop_mood_light_mode():
-    CEILING.set_intensity(CONFIG["DEFAULT"].get("stop_light_intensity", 255))
+    print("stop mood light")
+    CEILING.set_intensity(int(CONFIG["DEFAULT"].get("stop_light_intensity", 255)))
     CEILING.set_state(True)
     CANDLE.set_state(False)
     OUTLET.set_state(False)
@@ -91,6 +100,7 @@ def stop_mood_light_mode():
 
 
 def turn_off_everything():
+    print("turn off everything")
     CANDLE.set_state(False)
     CEILING.set_state(False)
     OUTLET.set_state(False)
@@ -100,6 +110,7 @@ def turn_off_everything():
 
 
 def power_off():
+    print("Power off")
     turn_off_everything()
     MOOD_LIGHT.shut_down()
     GPIO.cleanup()
@@ -108,6 +119,7 @@ def power_off():
 
 
 def snooze_mode():
+    print("SNOOZE MODE")
     global sleep_mode_snooze, snooze_timer, music_playing
     sleep_mode_snooze = True
     music_playing = False
@@ -123,6 +135,7 @@ def snooze_mode():
 
 
 def button_sleep_pressed():
+    print("BUTTON SLEEP PRESSED")
     global snooze_timer, music_timer, music_playing
 
     CEILING.set_state(False)
@@ -147,10 +160,12 @@ def button_sleep_pressed():
 
 
 def button_light1_pressed():
+    print("BUTTON LIGHT 1 PRESSED")
     CANDLE.toggle()
 
 
 def button_light2_pressed():
+    print("BUTTON LIGHT 2 PRESSED")
     MOOD_LIGHT.toggle()
 
 
