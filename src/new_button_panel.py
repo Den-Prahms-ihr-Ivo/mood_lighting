@@ -169,7 +169,7 @@ def button_sleep_pressed():
     OUTLET.set_state(True)
     MOOD_LIGHT.set_state(False)
     DISPLAY.set_state(False)
-    MUSIC_PLAYER.set_playlist("sleep")
+    MUSIC_PLAYER.set_playlist("relax")
     MUSIC_PLAYER.set_state(True)
     music_playing = True
 

@@ -70,25 +70,13 @@ def animate(ls):
         position = (i + offset) % LED_COUNT
         color_intensity = i / (LED_COUNT - 1)
         r = int(
-            (
-                ((R + minute_offset * 1 + delta.seconds + ms_offset) % 255)
-                * color_intensity
-            )
-            % 255
+            (((R + minute_offset * 1 + delta.seconds) % 255) * color_intensity) % 255
         )
         g = int(
-            (
-                ((G + minute_offset * 2 + delta.seconds + ms_offset) % 255)
-                * color_intensity
-            )
-            % 255
+            (((G + minute_offset * 2 + delta.seconds) % 255) * color_intensity) % 255
         )
         b = int(
-            (
-                ((B + minute_offset * 3 + delta.seconds + ms_offset) % 255)
-                * color_intensity
-            )
-            % 255
+            (((B + minute_offset * 3 + delta.seconds) % 255) * color_intensity) % 255
         )
         ls.setPixelColor(position, Color(r, g, b))
 
