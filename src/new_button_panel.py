@@ -126,6 +126,7 @@ def turn_off_everything():
     MOOD_LIGHT.set_state(False)
     MUSIC_PLAYER.set_state(False)
     DISPLAY.set_state(False)
+    MOOD_LIGHT.pop()
 
 
 def power_off():

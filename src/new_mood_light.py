@@ -63,9 +63,9 @@ def animate(ls):
     for i in range(0, LED_COUNT):
         position = (i + offset) % LED_COUNT
         color_intensity = i / LED_COUNT
-        r = int(min((R + minute_offset) * color_intensity), 255)
-        g = int(min((G + minute_offset) * color_intensity), 255)
-        b = int(min((B + minute_offset) * color_intensity), 255)
+        r = int(min((R + minute_offset) * color_intensity, 255))
+        g = int(min((G + minute_offset) * color_intensity, 255))
+        b = int(min((B + minute_offset) * color_intensity, 255))
 
         ls.setPixelColor(position, Color(r, g, b))
 
@@ -80,6 +80,7 @@ def led_consumer(queue: Queue):
     while True:
         item = queue.get()
         if item is not None:
+            print("New item in quee")
             print(item)
             mode, ls = item
 
@@ -110,6 +111,11 @@ def set_state(state):
 def toggle():
     global current_state
     set_state(not current_state)
+
+
+def pop():
+    global led_queue
+    led_queue.get()
 
 
 def shut_down():
