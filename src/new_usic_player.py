@@ -19,6 +19,15 @@ def set_state(flag):
         client.pause()
 
 
+def next_song():
+    _connect()
+    try:
+        client.next()
+    except Exception as e:
+        print("NExt song ging wohl nicht...")
+        print(e)
+
+
 def set_playlist(idx):
     global client
     _connect()

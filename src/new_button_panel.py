@@ -69,12 +69,10 @@ def button_start_stop_pressed():
     print("BUTTON START STOP PRESSED")
     global music_playing
     if music_playing:
-        OUTLET.set_state(True)
         MUSIC_PLAYER.set_state(False)
         mood_light_mode()
         music_playing = False
     else:
-        OUTLET.set_state(False)
         MUSIC_PLAYER.set_state(True)
         stop_mood_light_mode()
         music_playing = True
