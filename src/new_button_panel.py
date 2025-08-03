@@ -15,6 +15,7 @@ from src import new_display as DISPLAY
 from src import new_outlet as OUTLET
 from src import new_mood_light as MOOD_LIGHT
 
+BUTTON_DISABLE_TIME = 1
 
 music_playing = False
 current_playlist_idx = 0
@@ -23,6 +24,7 @@ snooze_timer = None
 music_timer = None
 sleep_mode_snooze = False
 display_timer = None
+buttons_enabled = True
 
 
 def init_playlists():
@@ -55,8 +57,16 @@ def init():
 
 
 def button_next_pressed():
+    global music_playing, playlists, buttons_enabled
+
+    if not buttons_enabled:
+        return
+    buttons_enabled = False
+    button_start_stop_timer = Timer(BUTTON_DISABLE_TIME, enable_buttons)
+    button_start_stop_timer.start()
+
     print("BUTTON NEXT PRESSED")
-    global music_playing, playlists
+
     if music_playing:
         MUSIC_PLAYER.next_song()
     else:
@@ -66,8 +76,16 @@ def button_next_pressed():
 
 
 def button_start_stop_pressed():
+    global music_playing, buttons_enabled
+
+    if not buttons_enabled:
+        return
+    buttons_enabled = False
+    button_start_stop_timer = Timer(BUTTON_DISABLE_TIME, enable_buttons)
+    button_start_stop_timer.start()
+
     print("BUTTON START STOP PRESSED")
-    global music_playing
+
     if music_playing:
         MUSIC_PLAYER.set_state(False)
         mood_light_mode()
@@ -98,6 +116,9 @@ def stop_mood_light_mode():
 
 
 def turn_off_everything():
+    global music_playing
+
+    music_playing = False
     print("turn off everything")
     CANDLE.set_state(False)
     CEILING.set_state(False)
@@ -133,8 +154,15 @@ def snooze_mode():
 
 
 def button_sleep_pressed():
+    global snooze_timer, music_timer, music_playing, buttons_enabled
+
+    if not buttons_enabled:
+        return
+    buttons_enabled = False
+    button_start_stop_timer = Timer(BUTTON_DISABLE_TIME, enable_buttons)
+    button_start_stop_timer.start()
+
     print("BUTTON SLEEP PRESSED")
-    global snooze_timer, music_timer, music_playing
 
     CEILING.set_state(False)
     OUTLET.set_state(True)
@@ -158,11 +186,27 @@ def button_sleep_pressed():
 
 
 def button_light1_pressed():
+    global buttons_enabled
+
+    if not buttons_enabled:
+        return
+    buttons_enabled = False
+    button_start_stop_timer = Timer(BUTTON_DISABLE_TIME, enable_buttons)
+    button_start_stop_timer.start()
+
     print("BUTTON LIGHT 1 PRESSED")
     CANDLE.toggle()
 
 
 def button_light2_pressed():
+    global buttons_enabled
+
+    if not buttons_enabled:
+        return
+    buttons_enabled = False
+    button_start_stop_timer = Timer(BUTTON_DISABLE_TIME, enable_buttons)
+    button_start_stop_timer.start()
+
     print("BUTTON LIGHT 2 PRESSED")
     MOOD_LIGHT.toggle()
 
@@ -180,3 +224,8 @@ def show(text):
 
     DISPLAY.set_state(True)
     DISPLAY.show(text)
+
+
+def enable_buttons():
+    global buttons_enabled
+    buttons_enabled = True

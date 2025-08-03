@@ -48,7 +48,7 @@ def wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
-def animate(led_strip):
+def animate(ls):
     s = datetime.datetime.now().second
     m = datetime.datetime.now().minute
     offset = s / 60 * LED_COUNT
@@ -58,6 +58,8 @@ def animate(led_strip):
     G = int(CONFIG["DEFAULT"].get("COLOR_G", 255))
     B = int(CONFIG["DEFAULT"].get("COLOR_B", 255))
 
+    print(f"{R}, {G}, {B}")
+
     for i in range(0, LED_COUNT):
         position = (i + offset) % LED_COUNT
         color_intensity = i / LED_COUNT
@@ -65,29 +67,30 @@ def animate(led_strip):
         g = min((G + minute_offset), 255) * color_intensity
         b = min((B + minute_offset), 255) * color_intensity
 
-        led_strip.setPixelColor(position, Color(r, g, b))
+        ls.setPixelColor(position, Color(r, g, b))
 
-    led_strip.show()
+    ls.show()
 
 
 def led_consumer(queue: Queue):
     print("LED Consumer läuft...")
-    led_strip = None
+    ls = None
     mode = None
 
     while True:
         item = queue.get()
         if item is not None:
-            mode, led_strip = item
+            mode, ls = item
 
         if mode == LED_Mode.STOP:
+            print("Stopping LED Consumer")
             for i in range(0, LED_COUNT):
-                led_strip.setPixelColor(i, Color(0, 0, 0))
-            led_strip.show()
+                ls.setPixelColor(i, Color(0, 0, 0))
+            ls.show()
             break
 
-        if led_strip is not None:
-            animate(led_strip)
+        if ls is not None:
+            animate(ls)
 
 
 def set_state(state):
