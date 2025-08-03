@@ -80,6 +80,7 @@ def led_consumer(queue: Queue):
     while True:
         item = queue.get()
         if item is not None:
+            print(item)
             mode, ls = item
 
         if mode == LED_Mode.STOP:
@@ -99,6 +100,7 @@ def set_state(state):
     if state:
         current_state = True
         led_thread.start()
+        led_queue.put((LED_Mode.RUN, led_strip))
     else:
         current_state = False
         led_queue.put((LED_Mode.STOP, led_strip))

@@ -88,11 +88,11 @@ def button_start_stop_pressed():
 
     if music_playing:
         MUSIC_PLAYER.set_state(False)
-        mood_light_mode()
+        stop_mood_light_mode()
         music_playing = False
     else:
         MUSIC_PLAYER.set_state(True)
-        stop_mood_light_mode()
+        mood_light_mode()
         music_playing = True
 
 
