@@ -1,4 +1,5 @@
 from queue import Queue
+
 from threading import Thread, Timer
 import datetime
 from enum import Enum
@@ -75,23 +76,23 @@ def led_consumer(queue: Queue):
     mode = None
 
     while True:
-        try:
-            item = queue.get(block=False)
-        except queue.Empty:
+        if not queue.empty():
+            item = queue.get()
+
+            if item is not None:
+                print("New item in quee")
+                mode, ls = item
+
+            if mode == LED_Mode.STOP:
+                print("Stopping LED Consumer")
+                for i in range(0, LED_COUNT):
+                    ls.setPixelColor(i, Color(0, 0, 0))
+                ls.show()
+                break
+        else:
             if ls is not None:
                 animate(ls)
                 continue
-
-        if item is not None:
-            print("New item in quee")
-            mode, ls = item
-
-        if mode == LED_Mode.STOP:
-            print("Stopping LED Consumer")
-            for i in range(0, LED_COUNT):
-                ls.setPixelColor(i, Color(0, 0, 0))
-            ls.show()
-            break
 
 
 def set_state(state):
@@ -118,9 +119,10 @@ def pop():
 
 
 def shut_down():
-    global led_queue, led_strip
+    global led_queue, led_strip, led_thread
     led_queue.put((LED_Mode.STOP, led_strip))
-    led_thread.join()
+    if led_thread.is_alive():
+        led_thread.join()
 
 
 led_thread = Thread(target=led_consumer, args=(led_queue,))
