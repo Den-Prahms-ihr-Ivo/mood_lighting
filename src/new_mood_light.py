@@ -75,7 +75,13 @@ def led_consumer(queue: Queue):
     mode = None
 
     while True:
-        item = queue.get(block=False)
+        try:
+            item = queue.get(block=False)
+        except queue.Empty:
+            if ls is not None:
+                animate(ls)
+                continue
+
         if item is not None:
             print("New item in quee")
             mode, ls = item
@@ -86,9 +92,6 @@ def led_consumer(queue: Queue):
                 ls.setPixelColor(i, Color(0, 0, 0))
             ls.show()
             break
-
-        if ls is not None:
-            animate(ls)
 
 
 def set_state(state):
