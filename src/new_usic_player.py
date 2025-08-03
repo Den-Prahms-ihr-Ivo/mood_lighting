@@ -14,8 +14,10 @@ _connected = False
 def set_state(flag):
     _connect()
     if flag:
+        print("... Play music")
         client.play()
     else:
+        print("... Pause music")
         client.pause()
 
 
