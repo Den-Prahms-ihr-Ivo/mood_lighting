@@ -37,7 +37,7 @@ def init_playlists():
 
         current_playlist_idx = randrange(len(playlists.keys()))
 
-    MUSIC_PLAYER.set_playlist(playlists.keys()[current_playlist_idx])
+    MUSIC_PLAYER.set_playlist(list(playlists.keys())[current_playlist_idx])
 
 
 def get_next_playlist():

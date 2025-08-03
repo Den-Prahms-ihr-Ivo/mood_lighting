@@ -8,7 +8,7 @@ from rpi_ws281x import PixelStrip, ws, Color
 
 
 class LED_Mode(Enum):
-    (RUN, STOP) = range(5)
+    (RUN, STOP) = range(2)
 
 
 LED_COUNT = 12
