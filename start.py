@@ -78,6 +78,7 @@ if __name__ == "__main__":
 
         # clean up
         GPIO.cleanup()
+        OUTLET._turn_off()
         MOOD_LIGHT.shut_down()
 
         print("\n\nTschöö, gä!")

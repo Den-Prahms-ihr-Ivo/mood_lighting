@@ -53,8 +53,8 @@ def wheel(pos):
 def animate(ls):
     s = datetime.datetime.now().second
     m = datetime.datetime.now().minute
-    offset = int(s / 60 * LED_COUNT)
-    minute_offset = m / 60 * 255
+    offset = int(s / 59 * LED_COUNT)
+    minute_offset = m / 59 * 100
 
     R = int(CONFIG["DEFAULT"].get("COLOR_R", 255))
     G = int(CONFIG["DEFAULT"].get("COLOR_G", 255))
@@ -63,9 +63,9 @@ def animate(ls):
     for i in range(0, LED_COUNT):
         position = (i + offset) % LED_COUNT
         color_intensity = i / LED_COUNT
-        r = int(min((R + minute_offset) * color_intensity, 255))
-        g = int(min((G + minute_offset) * color_intensity, 255))
-        b = int(min((B + minute_offset) * color_intensity, 255))
+        r = int((R + minute_offset) * color_intensity % 255)
+        g = int((G + minute_offset) * color_intensity % 255)
+        b = int((B + minute_offset) * color_intensity % 255)
         ls.setPixelColor(position, Color(r, g, b))
 
     ls.show()
