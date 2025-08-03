@@ -75,14 +75,11 @@ def led_consumer(queue: Queue):
     mode = None
 
     while True:
-        item = queue.get()
+        item = queue.get(block=False)
         if item is not None:
             print("New item in quee")
-            print(item)
-            print(ls)
             mode, ls = item
 
-        print(ls)
         if mode == LED_Mode.STOP:
             print("Stopping LED Consumer")
             for i in range(0, LED_COUNT):
@@ -92,9 +89,6 @@ def led_consumer(queue: Queue):
 
         if ls is not None:
             animate(ls)
-
-        print("LAST ls:")
-        print(ls)
 
 
 def set_state(state):
