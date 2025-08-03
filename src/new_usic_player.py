@@ -18,7 +18,7 @@ def set_state(flag):
         client.play()
     else:
         print("... Pause music")
-        client.pause()
+        client.stop()
 
 
 def next_song():
