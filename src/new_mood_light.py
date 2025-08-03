@@ -56,7 +56,7 @@ def animate(ls):
     global previous_time
     s = datetime.datetime.now().second
     delta = previous_time - datetime.datetime.now()
-
+    ms_offset = int(s / 1000000 * 255)
     m = datetime.datetime.now().minute
     offset = int(s / 59 * (LED_COUNT - 1))
 
@@ -69,9 +69,27 @@ def animate(ls):
     for i in range(0, LED_COUNT):
         position = (i + offset) % LED_COUNT
         color_intensity = i / (LED_COUNT - 1)
-        r = int((((R + minute_offset * 1 + delta) % 255) * color_intensity) % 255)
-        g = int((((G + minute_offset * 2 + delta) % 255) * color_intensity) % 255)
-        b = int((((B + minute_offset * 3 + delta) % 255) * color_intensity) % 255)
+        r = int(
+            (
+                ((R + minute_offset * 1 + delta.seconds + ms_offset) % 255)
+                * color_intensity
+            )
+            % 255
+        )
+        g = int(
+            (
+                ((G + minute_offset * 2 + delta.seconds + ms_offset) % 255)
+                * color_intensity
+            )
+            % 255
+        )
+        b = int(
+            (
+                ((B + minute_offset * 3 + delta.seconds + ms_offset) % 255)
+                * color_intensity
+            )
+            % 255
+        )
         ls.setPixelColor(position, Color(r, g, b))
 
     ls.show()
