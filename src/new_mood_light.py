@@ -4,6 +4,7 @@ from threading import Thread, Timer
 import datetime
 from enum import Enum
 from src.config import CONFIG
+import time
 
 from rpi_ws281x import PixelStrip, ws, Color
 
@@ -65,10 +66,11 @@ def animate(ls):
         r = int(min((R + minute_offset) * color_intensity, 255))
         g = int(min((G + minute_offset) * color_intensity, 255))
         b = int(min((B + minute_offset) * color_intensity, 255))
-        print(f"{r}, {g}, {b}")
         ls.setPixelColor(position, Color(r, g, b))
 
     ls.show()
+
+    time.sleep(50 / 1000.0)
 
 
 def led_consumer(queue: Queue):
