@@ -56,7 +56,7 @@ def animate(ls):
     global previous_time
     s = datetime.datetime.now().second
     delta = previous_time - datetime.datetime.now()
-    ms_offset = int(s / 1000000 * 255)
+    ms_offset = int(s / 1000000 * LED_COUNT)
     m = datetime.datetime.now().minute
     offset = int(s / 59 * (LED_COUNT - 1))
 
@@ -67,7 +67,7 @@ def animate(ls):
     B = int(CONFIG["DEFAULT"].get("COLOR_B", 235))
 
     for i in range(0, LED_COUNT):
-        position = (i + offset) % LED_COUNT
+        position = (i + offset + ms_offset) % LED_COUNT
         color_intensity = i / (LED_COUNT - 1)
         r = int((((R + minute_offset * 1 + delta.seconds) * color_intensity % 255)))
         g = int((((G + minute_offset * 2 + delta.seconds) * color_intensity % 255)))
