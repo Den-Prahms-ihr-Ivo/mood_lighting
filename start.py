@@ -1,4 +1,4 @@
-from src.mood_lighting import initialise_button_panel as INITIALISE_BP
+from src import new_button_panel as BP
 from src.config import CONFIG
 from src.helper.mailer import send_mail
 
@@ -21,8 +21,7 @@ POWEROFF_BUTTON_PIN = int(CONFIG["DEFAULT"].get("POWEROFF_BUTTON_PIN", 12))
 
 AUDIO_SWITCH_PIN = int(CONFIG["DEFAULT"].get("AUDIO_SWITCH", 5))
 CANDLE_PIN = int(CONFIG["DEFAULT"].get("CANDLE_PIN", 20))
-print(NEXT_PIN)
-print(type(NEXT_PIN))
+
 # GPIO.setup(NEXT_PIN, GPIO.IN)
 # GPIO.setup(START_STOP_PIN, GPIO.IN)
 # GPIO.setup(SLEEP_PIN, GPIO.IN)
@@ -31,6 +30,7 @@ print(type(NEXT_PIN))
 
 GPIO.setup(AUDIO_SWITCH_PIN, GPIO.OUT, initial=0)
 GPIO.setup(CANDLE_PIN, GPIO.OUT, initial=0)
+GPIO.setup(20, GPIO.OUT, initial=1)
 
 next_btn = Button(NEXT_PIN)
 start_stop_btn = Button(START_STOP_PIN)
@@ -42,8 +42,7 @@ empty_btn = Button(EMPTY_PIN)
 # candle_pin = LED(CANDLE_PIN)
 
 try:
-    bp = INITIALISE_BP()
-    bp.initialise_states()
+    BP.initialise_states()
 except ConnectionRefusedError as e:
     send_mail(
         text="[Errno 111] Connection refused.\nTried to Initialize Button Panel and Connect to the MPD",
@@ -60,11 +59,11 @@ if __name__ == "__main__":
     try:
         GPIO.setwarnings(False)
 
-        next_btn.when_released = bp.button_next_pressed
-        start_stop_btn.when_released = bp.button_start_stop_pressed
-        sleep_btn.when_released = bp.button_sleep_pressed
-        empty_btn.when_released = bp.button_mood_pressed
-        shutdown_btn.when_held = bp.button_shutdown_pressed
+        next_btn.when_released = BP.button_next_pressed
+        sleep_btn.when_released = BP.button_sleep_pressed
+        start_stop_btn.when_released = BP.button_start_stop_pressed
+        shutdown_btn.when_held = BP.button_light1_pressed
+        empty_btn.when_released = BP.button_light2_pressed
 
         while True:
             time.sleep(0)

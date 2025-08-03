@@ -1,0 +1,38 @@
+from mpd import MPDClient
+
+from threading import Timer
+
+HOST = "localhost"
+PORT = 6600
+
+client = MPDClient()
+client.timeout = 10
+client.idletimeout = None
+
+
+def set_state(flag):
+    _connect()
+    if flag:
+        client.play()
+    else:
+        client.pause()
+
+
+def set_playlist(idx):
+    global client
+    _connect()
+    client.clear()
+    client.load(idx)
+
+
+def _connect():
+    if not _connected:
+        client.connect(HOST, PORT)
+        _connected = True
+        cnt_dwn_timer = Timer(5, disconnect)
+        cnt_dwn_timer.start()
+
+
+def disconnect():
+    _connected = False
+    client.disconnect()
