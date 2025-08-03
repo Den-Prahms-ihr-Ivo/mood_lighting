@@ -65,6 +65,7 @@ def animate(ls):
         r = int(min((R + minute_offset) * color_intensity, 255))
         g = int(min((G + minute_offset) * color_intensity, 255))
         b = int(min((B + minute_offset) * color_intensity, 255))
+        print(f"{r}, {g}, {b}")
         ls.setPixelColor(position, Color(r, g, b))
 
     ls.show()
@@ -77,7 +78,7 @@ def led_consumer(queue: Queue):
 
     while True:
         if not queue.empty():
-            item = queue.get()
+            item = queue.get(block=False)
 
             if item is not None:
                 print("New item in quee")
@@ -92,7 +93,6 @@ def led_consumer(queue: Queue):
         else:
             if ls is not None:
                 animate(ls)
-                continue
 
 
 def set_state(state):
