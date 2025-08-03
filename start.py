@@ -2,6 +2,7 @@ from src import new_button_panel as BP
 from src.config import CONFIG
 from src.helper.mailer import send_mail
 from src import new_outlet as OUTLET
+from src import new_mood_light as MOOD_LIGHT
 
 import time
 
@@ -77,5 +78,6 @@ if __name__ == "__main__":
 
         # clean up
         GPIO.cleanup()
+        MOOD_LIGHT.shut_down()
 
         print("\n\nTschöö, gä!")
