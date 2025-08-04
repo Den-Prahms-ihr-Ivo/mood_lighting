@@ -77,16 +77,16 @@ def animate(ls, current_color, fade_color, current_color_step):
     for i in range(0, LED_COUNT):
         r = (
             current_color["R"]
-            + current_color_step * (fade_color["R"] - current_color["R"]) / 255
+            + current_color_step * (current_color["R"] - fade_color["R"]) / 255
         )
 
         g = (
             current_color["G"]
-            + current_color_step * (fade_color["G"] - current_color["R"]) / 255
+            + current_color_step * (current_color["G"] - fade_color["R"]) / 255
         )
         b = (
             current_color["B"]
-            + current_color_step * (fade_color["B"] - current_color["R"]) / 255
+            + current_color_step * (current_color["B"] - fade_color["R"]) / 255
         )
 
         ls.setPixelColor(i, Color(int(cs(r)), int(cs(g)), int(cs(b))))
