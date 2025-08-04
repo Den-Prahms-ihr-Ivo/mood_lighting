@@ -65,12 +65,12 @@ def wheel(pos):
 
 
 def cs(c):
-    return int(min(int(c), 255))
+    return min(int(c), 255)
 
 
 def animate(ls, current_color, fade_color, current_color_step):
-    s = int(datetime.datetime.now().microsecond / 10000)
-    if s % 10 != 0:
+    s = int(datetime.datetime.now().microsecond / 100000)
+    if s % 100 != 0:
         return
 
     for i in range(0, LED_COUNT):
@@ -88,7 +88,7 @@ def animate(ls, current_color, fade_color, current_color_step):
             + current_color_step * (fade_color["B"] - current_color["R"]) / 255
         )
 
-        ls.setPixelColor(i, Color(cs(r), cs(g), cs(b)))
+        ls.setPixelColor(i, Color(int(cs(r)), int(cs(g)), int(cs(b))))
 
     ls.show()
 
