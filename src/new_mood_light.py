@@ -46,13 +46,6 @@ led_strip = PixelStrip(
 led_strip.begin()
 currently_running = False
 
-current_color_1 = random.choice(colors)
-current_color_2 = random.choice(colors)
-fade_color_1 = random.choice(colors)
-fade_color_2 = random.choice(colors)
-current_color_step = 0
-N = 255
-
 
 def wheel(pos):
     """Generate rainbow colors across 0-255 positions."""
@@ -70,61 +63,41 @@ def cs(c):
     return min(int(c), 255)
 
 
-def animate(ls):
-    global current_color_step, current_color_1, current_color_2, fade_color_1, fade_color_2, N, colors
+def animate(ls, current_color, fade_color, current_color_step):
     s = int(datetime.datetime.now().microsecond / 10000)
     if s % 10 != 0:
         return
-    r = 0
-    g = 0
-    b = 0
 
     for i in range(0, LED_COUNT):
-        if i % 2 == 0:
-            r = (
-                current_color_1["R"]
-                + current_color_step * (fade_color_1["R"] - current_color_1["R"]) / N
-            )
+        r = (
+            current_color["R"]
+            + current_color_step * (fade_color["R"] - current_color["R"]) / 255
+        )
 
-            g = (
-                current_color_1["G"]
-                + current_color_step * (fade_color_1["G"] - current_color_1["R"]) / N
-            )
-            b = (
-                current_color_1["B"]
-                + current_color_step * (fade_color_1["B"] - current_color_1["R"]) / N
-            )
-
-        else:
-            r = (
-                current_color_2["R"]
-                + current_color_step * (fade_color_2["R"] - current_color_2["R"]) / N
-            )
-            g = (
-                current_color_2["G"]
-                + current_color_step * (fade_color_2["G"] - current_color_2["R"]) / N
-            )
-            b = (
-                current_color_2["B"]
-                + current_color_step * (fade_color_2["B"] - current_color_2["R"]) / N
-            )
+        g = (
+            current_color["G"]
+            + current_color_step * (fade_color["G"] - current_color["R"]) / 255
+        )
+        b = (
+            current_color["B"]
+            + current_color_step * (fade_color["B"] - current_color["R"]) / 255
+        )
 
         ls.setPixelColor(i, Color(cs(r), cs(g), cs(b)))
-        current_color_step += 1
-        if current_color_step >= N:
-            current_color_step = 0
-            fade_color_1 = random.choice(colors)
-            fade_color_2 = random.choice(colors)
 
     ls.show()
 
     time.sleep(50 / 1000.0)
+    return current_color_step + 1
 
 
 def led_consumer(queue: Queue):
     print("LED Consumer läuft...")
     ls = None
     mode = None
+    current_color = random.choice(colors)
+    fade_color = random.choice(colors)
+    current_color_step = 0
 
     while True:
         if not queue.empty():
@@ -142,7 +115,14 @@ def led_consumer(queue: Queue):
                 break
         else:
             if ls is not None:
-                animate(ls)
+                current_color_step = animate(
+                    ls, current_color, fade_color, current_color_step
+                )
+
+                if current_color_step >= 255:
+                    current_color_step = 0
+                    current_color = fade_color
+                    fade_color = random.choice(colors)
 
 
 def set_state(state):
