@@ -5,8 +5,17 @@ import datetime
 from enum import Enum
 from src.config import CONFIG
 import time
+import random
 
 from rpi_ws281x import PixelStrip, ws, Color
+
+colors = [
+    {"R": 255, "G": 255, "B": 255},
+    {"R": 255, "G": 255, "B": 255},
+    {"R": 255, "G": 255, "B": 255},
+    {"R": 255, "G": 255, "B": 255},
+    {"R": 255, "G": 255, "B": 255},
+]
 
 
 class LED_Mode(Enum):
@@ -37,7 +46,12 @@ led_strip = PixelStrip(
 led_strip.begin()
 currently_running = False
 
-previous_time = datetime.datetime.now()
+current_color_1 = random.choice(colors)
+current_color_2 = random.choice(colors)
+fade_color_1 = random.choice(colors)
+fade_color_2 = random.choice(colors)
+current_color_step = 0
+N = 255
 
 
 def wheel(pos):
@@ -53,26 +67,53 @@ def wheel(pos):
 
 
 def animate(ls):
-    global previous_time
-    s = datetime.datetime.now().second
-    delta = previous_time - datetime.datetime.now()
-    ms_offset = int(s / 1000000 * LED_COUNT)
-    m = datetime.datetime.now().minute
-    offset = int(s / 59 * (LED_COUNT - 1))
-
-    minute_offset = m / 59 * 100
-
-    R = int(CONFIG["DEFAULT"].get("COLOR_R", 0))
-    G = int(CONFIG["DEFAULT"].get("COLOR_G", 183))
-    B = int(CONFIG["DEFAULT"].get("COLOR_B", 235))
+    global previous_time, current_color_step, current_color_1, current_color_2, fade_color_1, fade_color_2, N, colors
+    s = int(datetime.datetime.now().microsecond / 10000)
+    if s % 10 != 0:
+        return
 
     for i in range(0, LED_COUNT):
-        position = (i + offset + ms_offset * i) % LED_COUNT
-        color_intensity = i / (LED_COUNT - 1)
-        r = int((((R + minute_offset * 1 + delta.seconds) * color_intensity % 255)))
-        g = int((((G + minute_offset * 2 + delta.seconds) * color_intensity % 255)))
-        b = int((((B + minute_offset * 3 + delta.seconds) * color_intensity % 255)))
-        ls.setPixelColor(position, Color(r, g, b))
+        if i % 2 == 0:
+            current_color_1["R"] = (
+                current_color_1["R"]
+                + current_color_step * (fade_color_1["R"] - current_color_1["R"]) / N
+            )
+
+            current_color_1["G"] = (
+                current_color_1["G"]
+                + current_color_step * (fade_color_1["G"] - current_color_1["R"]) / N
+            )
+            current_color_1["B"] = (
+                current_color_1["B"]
+                + current_color_step * (fade_color_1["B"] - current_color_1["R"]) / N
+            )
+            ls.setPixelColor(
+                i,
+                Color(current_color_1["R"], current_color_1["G"], current_color_1["B"]),
+            )
+        else:
+            current_color_2["R"] = (
+                current_color_2["R"]
+                + current_color_step * (fade_color_2["R"] - current_color_2["R"]) / N
+            )
+            current_color_2["G"] = (
+                current_color_2["G"]
+                + current_color_step * (fade_color_2["G"] - current_color_2["R"]) / N
+            )
+            current_color_2["B"] = (
+                current_color_2["B"]
+                + current_color_step * (fade_color_2["B"] - current_color_2["R"]) / N
+            )
+            ls.setPixelColor(
+                i,
+                Color(current_color_2["R"], current_color_2["G"], current_color_2["B"]),
+            )
+
+        current_color_step += 1
+        if current_color_step >= N:
+            current_color_step = 0
+            fade_color_1 = random.choice(colors)
+            fade_color_2 = random.choice(colors)
 
     ls.show()
 
