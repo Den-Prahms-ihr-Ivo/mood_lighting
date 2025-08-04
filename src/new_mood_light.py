@@ -88,7 +88,6 @@ def animate(ls, current_color, fade_color, current_color_step):
     ls.show()
 
     time.sleep(50 / 1000.0)
-    return current_color_step + 1
 
 
 def led_consumer(queue: Queue):
@@ -115,10 +114,8 @@ def led_consumer(queue: Queue):
                 break
         else:
             if ls is not None:
-                current_color_step = animate(
-                    ls, current_color, fade_color, current_color_step
-                )
-
+                animate(ls, current_color, fade_color, current_color_step)
+                current_color_step += 1
                 if current_color_step >= 255:
                     current_color_step = 0
                     current_color = fade_color
