@@ -88,7 +88,7 @@ def animate(ls, current_color, fade_color, current_color_step):
             current_color["B"]
             + current_color_step * (fade_color["B"] - current_color["R"]) / 255
         )
-        print(r)
+
         ls.setPixelColor(i, Color(int(cs(r)), int(cs(g)), int(cs(b))))
 
     ls.show()
