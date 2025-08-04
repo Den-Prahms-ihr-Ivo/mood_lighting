@@ -77,18 +77,18 @@ def animate(ls, current_color, fade_color, current_color_step):
     for i in range(0, LED_COUNT):
         r = (
             current_color["R"]
-            + current_color_step * (current_color["R"] - fade_color["R"]) / 255
+            + current_color_step * (fade_color["R"] - current_color["R"]) / 255
         )
 
         g = (
             current_color["G"]
-            + current_color_step * (current_color["G"] - fade_color["R"]) / 255
+            + current_color_step * (fade_color["G"] - current_color["R"]) / 255
         )
         b = (
             current_color["B"]
-            + current_color_step * (current_color["B"] - fade_color["R"]) / 255
+            + current_color_step * (fade_color["B"] - current_color["R"]) / 255
         )
-
+        print(r)
         ls.setPixelColor(i, Color(int(cs(r)), int(cs(g)), int(cs(b))))
 
     ls.show()
@@ -126,7 +126,7 @@ def led_consumer(queue: Queue):
                 current_color_step = animate(
                     ls, current_color, fade_color, current_color_step
                 )
-                if current_color_step >= 255:
+                if current_color_step > 255:
                     print("RESET COLOR")
                     current_color_step = 0
                     current_color = fade_color
