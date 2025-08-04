@@ -75,52 +75,41 @@ def animate(ls):
     s = int(datetime.datetime.now().microsecond / 10000)
     if s % 10 != 0:
         return
+    r = 0
+    g = 0
+    b = 0
 
     for i in range(0, LED_COUNT):
         if i % 2 == 0:
-            current_color_1["R"] = (
+            r = (
                 current_color_1["R"]
                 + current_color_step * (fade_color_1["R"] - current_color_1["R"]) / N
             )
 
-            current_color_1["G"] = (
+            g = (
                 current_color_1["G"]
                 + current_color_step * (fade_color_1["G"] - current_color_1["R"]) / N
             )
-            current_color_1["B"] = (
+            b = (
                 current_color_1["B"]
                 + current_color_step * (fade_color_1["B"] - current_color_1["R"]) / N
             )
-            ls.setPixelColor(
-                i,
-                Color(
-                    cs(current_color_1["R"]),
-                    cs(current_color_1["G"]),
-                    cs(current_color_1["B"]),
-                ),
-            )
+
         else:
-            current_color_2["R"] = (
+            r = (
                 current_color_2["R"]
                 + current_color_step * (fade_color_2["R"] - current_color_2["R"]) / N
             )
-            current_color_2["G"] = (
+            g = (
                 current_color_2["G"]
                 + current_color_step * (fade_color_2["G"] - current_color_2["R"]) / N
             )
-            current_color_2["B"] = (
+            b = (
                 current_color_2["B"]
                 + current_color_step * (fade_color_2["B"] - current_color_2["R"]) / N
             )
-            ls.setPixelColor(
-                i,
-                Color(
-                    cs(current_color_2["R"]),
-                    cs(current_color_2["G"]),
-                    cs(current_color_2["B"]),
-                ),
-            )
 
+        ls.setPixelColor(i, Color(cs(r), cs(g), cs(b)))
         current_color_step += 1
         if current_color_step >= N:
             current_color_step = 0
