@@ -66,8 +66,12 @@ def wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
+def cs(c):
+    return min(int(c), 255)
+
+
 def animate(ls):
-    global previous_time, current_color_step, current_color_1, current_color_2, fade_color_1, fade_color_2, N, colors
+    global current_color_step, current_color_1, current_color_2, fade_color_1, fade_color_2, N, colors
     s = int(datetime.datetime.now().microsecond / 10000)
     if s % 10 != 0:
         return
@@ -89,7 +93,11 @@ def animate(ls):
             )
             ls.setPixelColor(
                 i,
-                Color(current_color_1["R"], current_color_1["G"], current_color_1["B"]),
+                Color(
+                    cs(current_color_1["R"]),
+                    cs(current_color_1["G"]),
+                    cs(current_color_1["B"]),
+                ),
             )
         else:
             current_color_2["R"] = (
@@ -106,7 +114,11 @@ def animate(ls):
             )
             ls.setPixelColor(
                 i,
-                Color(current_color_2["R"], current_color_2["G"], current_color_2["B"]),
+                Color(
+                    cs(current_color_2["R"]),
+                    cs(current_color_2["G"]),
+                    cs(current_color_2["B"]),
+                ),
             )
 
         current_color_step += 1
@@ -145,11 +157,10 @@ def led_consumer(queue: Queue):
 
 
 def set_state(state):
-    global led_strip, led_thread, current_state, previous_time
+    global led_strip, led_thread, current_state
 
     if state:
         current_state = True
-        previous_time = datetime.datetime.now()
         led_thread.start()
         led_queue.put((LED_Mode.RUN, led_strip))
     else:
