@@ -71,7 +71,7 @@ def cs(c):
 
 def animate(ls, current_color, fade_color, current_color_step):
     s = int(datetime.datetime.now().microsecond / 1000000)
-    if s % 200 != 0:
+    if s % 400 != 0:
         return current_color_step
 
     for i in range(0, LED_COUNT):
@@ -104,6 +104,8 @@ def led_consumer(queue: Queue):
     current_color = random.choice(colors)
     fade_color = random.choice(colors)
     current_color_step = 0
+    print(current_color)
+    print(fade_color)
 
     while True:
         if not queue.empty():
@@ -125,9 +127,12 @@ def led_consumer(queue: Queue):
                     ls, current_color, fade_color, current_color_step
                 )
                 if current_color_step >= 255:
+                    print("RESET COLOR")
                     current_color_step = 0
                     current_color = fade_color
                     fade_color = random.choice(colors)
+                    print(current_color)
+                    print(fade_color)
 
 
 def set_state(state):
