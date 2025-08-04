@@ -65,7 +65,7 @@ def wheel(pos):
 
 
 def cs(c):
-    return min(int(c), 255)
+    return int(min(c, 255))
 
 
 def animate(ls, current_color, fade_color, current_color_step):
