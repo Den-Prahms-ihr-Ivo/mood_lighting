@@ -65,6 +65,7 @@ def wheel(pos):
 
 
 def cs(c):
+    c = max(int(c), 0)
     return min(int(c), 255)
 
 
