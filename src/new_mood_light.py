@@ -10,11 +10,16 @@ import random
 from rpi_ws281x import PixelStrip, ws, Color
 
 colors = [
-    {"R": 255, "G": 255, "B": 255},
-    {"R": 255, "G": 255, "B": 255},
-    {"R": 255, "G": 255, "B": 255},
-    {"R": 255, "G": 255, "B": 255},
-    {"R": 255, "G": 255, "B": 255},
+    {"R": 250, "G": 0, "B": 63},  # Rose Red
+    {"R": 80, "G": 200, "B": 120},  # Emerald
+    {"R": 228, "G": 0, "B": 120},  # Red Purple
+    {"R": 127, "G": 0, "B": 255},  # Violet
+    {"R": 0, "G": 0, "B": 205},  # Medium Blue
+    {"R": 152, "G": 251, "B": 203},  # Mint Blue
+    {"R": 255, "G": 239, "B": 0},  # Canary Yellow
+    {"R": 255, "G": 92, "B": 0},  # Neon Orange
+    {"R": 205, "G": 28, "B": 24},  # Chili Red
+    {"R": 255, "G": 133, "B": 89},  # Coral
 ]
 
 
