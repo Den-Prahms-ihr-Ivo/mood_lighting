@@ -82,11 +82,11 @@ def animate(ls, current_color, fade_color, current_color_step):
 
         g = (
             current_color["G"]
-            + current_color_step * (fade_color["G"] - current_color["R"]) / 255
+            + current_color_step * (fade_color["G"] - current_color["G"]) / 255
         )
         b = (
             current_color["B"]
-            + current_color_step * (fade_color["B"] - current_color["R"]) / 255
+            + current_color_step * (fade_color["B"] - current_color["B"]) / 255
         )
 
         ls.setPixelColor(i, Color(int(cs(r)), int(cs(g)), int(cs(b))))
@@ -104,8 +104,6 @@ def led_consumer(queue: Queue):
     current_color = random.choice(colors)
     fade_color = random.choice(colors)
     current_color_step = 0
-    print(current_color)
-    print(fade_color)
 
     while True:
         if not queue.empty():
@@ -127,12 +125,9 @@ def led_consumer(queue: Queue):
                     ls, current_color, fade_color, current_color_step
                 )
                 if current_color_step > 255:
-                    print("RESET COLOR")
                     current_color_step = 0
                     current_color = fade_color
                     fade_color = random.choice(colors)
-                    print(current_color)
-                    print(fade_color)
 
 
 def set_state(state):
