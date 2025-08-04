@@ -72,7 +72,7 @@ def cs(c):
 def animate(ls, current_color, fade_color, current_color_step):
     s = int(datetime.datetime.now().microsecond / 1000000)
     if s % 100 != 0:
-        return current_color
+        return current_color_step
 
     for i in range(0, LED_COUNT):
         r = (
@@ -94,7 +94,7 @@ def animate(ls, current_color, fade_color, current_color_step):
     ls.show()
 
     time.sleep(50 / 1000.0)
-    return current_color + 1
+    return current_color_step + 1
 
 
 def led_consumer(queue: Queue):
